@@ -1,0 +1,58 @@
+{% comment %}
+  <!-- single add-to-calendar link -->
+  {%- include event-v2-calendar-single.html
+    service_name = "google"
+    display_name = "Google"
+  -%}
+  
+-->
+{% endcomment %}
+
+
+{%- comment -%}
+  addevent_user_client_id ausgeliehen von https://help.kumospace.com/hosting-an-event
+{%- endcomment -%}
+{%- assign addevent_user_client_id = "aTXvLVnsBzoHRKthkmkA105082" -%} 
+{%- assign timezone = "UTC" -%}
+{%- assign alarm_mins = "1440" -%}
+{%- capture title -%}{{ event_title }} | {{ event_subtitle }}{%- endcapture -%}
+{%- capture description -%}{{ event_description }}{%- endcapture -%}
+{%- capture location -%}https://dance123.club{{event_path}}?r=calendar-{{include.service_name}}{%- endcapture -%}
+
+
+<a href="https://www.addevent.com/dir/?service={{include.service_name}}&amp;client={{addevent_user_client_id}}&amp;start={{event_time_begin_utc | url_encode}}&amp;end={{event_time_end_utc | url_encode}}&amp;timezone={{timezone | url_encode}}&amp;alarm={{alarm_mins}}&amp;title={{title | url_encode}}&amp;description={{description | url_encode}}&amp;location={{location | url_encode}}&amp;calname=event" title="" rel="noreferrer nofollow" target="_blank">{{include.display_name}}</a>
+
+
+{%- comment -%}
+
+Link Examples:
+
+https://www.addevent.com/dir/?client={{addevent_user_client_id}}&
+start=07%2F16%2F2021+09%3A00+AM&
+end=07%2F16%2F2021+11%3A00+AM&
+title=Title+of+the+event&
+description=Description+of+the+event&
+location=1600+Amphitheatre+Pkwy%2C+Mountain+View%2C+CA+94043&
+timezone=America%2FLos_Angeles&
+service=apple
+
+Example:
+
+https://www.addevent.com/create/?service=APPLEICAL&
+dstart=07/09/2021%2016:30:00&
+dend=07/09/2021%2017:00:00&
+dtime=America/New_York&
+dsum=Getting+Started+with+Kumospace+Open+House&
+ddesc=Join+us+this+Friday%2C+at+4%3A30+pm+EST+and+hear+the+Kumospace+story+from+Cofounder+Brett+Martin%2C+learn+about+all+our+features+and+future+offerings+and+have+fun+with+fellow+new+hosts.&
+dloca=https%3A%2F%2Fwww.kumospace.com%2Fgettingstarted&
+dallday=false&
+alarm=60&
+drule=&
+dateformat=MM%2FDD%2FYYYY&
+client=aTXvLVnsBzoHRKthkmkA105082&
+calname=&
+uid=&status=&method=&transp=&rt=evt&
+reference=https://www.addevent.com/event/Rx5953630
+
+
+{%- endcomment -%}

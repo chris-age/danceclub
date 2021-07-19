@@ -1,0 +1,53 @@
+theme: jekyll-theme-midnight
+
+title: dance123.club | Video-Dance-Party
+#description: Mit Tanzverrückten, mit Freunden, mit Chris ... 
+description: Weltweit kostenlos per Zoom-Video-Meeting mitfeiern ...
+lang: de-DE
+show_downloads: false
+google_analytics_id: UA-166343250-1
+
+#OLD: video_url:    "https://us02web.zoom.us/j/5779481190?pwd=Uk96ekF0T01jVmtDR1pMWTh4aFdLUT09"
+video_url:         "https://us02web.zoom.us/j/5779481190?pwd=QytkdU54THcyS1loRGpyN3kyYlJRdz09"
+video_meeting_url: "https://us02web.zoom.us/j/5779481190?pwd=QytkdU54THcyS1loRGpyN3kyYlJRdz09"
+video_meeting_id: 577 948 1190
+video_meeting_pin: 7wj123
+#OLD: video_meeting_pin: 6wj18n
+# main:
+audio_url: https://www.twitch.tv/chrisandmore
+# 2nd:
+#audio_url: https://www.twitch.tv/chrisandfriend
+# C. B. (80's):
+#audio_url: https://www.twitch.tv/dj202020202020202
+
+video_test_url: "https://us02web.zoom.us/test"
+audio_test_url: "https://www.twitch.tv/nocopyrightsounds"
+web_trember_url: "https://trember.me/joinvideo/RGB-76204-snch-224"
+
+exclude:
+- OLD
+- _events/OLD
+- README*
+- "*.sh"
+- common
+
+timezone: Etc/UTC
+
+collections:
+  events: # corresdonds to folder "/_events/"
+    sort_by: path
+    output: true
+  faqs: # corresdonds to folder "/_faqs/"
+    sort_by: path
+    output: false
+    
+# needed to generate pages with recognized date in the file name which is in the future:
+future: true
+
+defaults:
+  - scope:
+      path: "" # an empty string here means all files in the project
+    values:
+      example_var_name: "exampel defautl value"
+
+

@@ -1,0 +1,93 @@
+---
+---
+
+/* @import "{{ site.theme }}"; */
+
+.bigtext {
+  font-size: 150%;
+  font-weight: bold;
+}
+
+.anchorPos {
+    display: block;
+    position: relative;
+    top: -70px;
+    visibility: hidden;
+}
+
+.banner {
+  /* The image used */
+  background-image: url("/assets/images/gifer.com.Wt3J.7157f1fea0e67b3b1b6a2ec8c2be299f.gif");
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+#header {
+    height: 55px;
+}
+#header nav {
+  margin: 0px auto;
+}
+#header nav li a {
+  color: white;
+  border: 1px solid #5d910b;
+  background: linear_gradient(#93bd20, #659e10);
+  border-radius: 2px;
+  box-shadow: inset 0px 1px 0px rgba(255,255,255,0.3),0px 3px 7px rgba(0,0,0,0.7);
+  /*background-color: #93bd20;*/
+  background-color: rgba(0, 0, 0, 0.0);
+  padding: 10px 12px;
+  margin-top: 6px;
+  line-height: 14px;
+  font-size: 14px;
+  font-weight: 900;
+  display: inline-block;
+  text-align: center;
+}
+#header nav li a:hover {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+@media print, screen and (max-width: 480px) {
+  #header {
+    margin-top: 0px;
+  }
+  /*
+  section {
+    margin-top: 0px;
+  }
+  */
+  nav {
+    display: block;
+  }
+}
+@media print, screen and (max-width: 280px) {
+  #header {
+    margin-top: -20px;
+  }
+  section {
+    margin-top: 40px;
+  }
+  nav {
+    display: none;
+  }
+}
+
+.video-container {
+  position: relative;
+  padding-bottom: 56.25%;
+  padding-top: 0;
+  height: 0;
+  overflow: hidden;
+}
+.video-container iframe,
+.video-container object,
+.video-container embed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}

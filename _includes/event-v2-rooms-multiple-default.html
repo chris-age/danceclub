@@ -1,0 +1,280 @@
+{% comment %}
+  <!-- Show event multiple rooms -->
+  {% include event-v2-rooms-multiple-default.html %}
+{% endcomment %}
+
+ 
+
+        <!--
+          -
+          - EVENT ROOMS-MULTIPLE
+          -
+          -->
+        <section class="rooms rooms-multiple">
+          <div class="container">
+            <div class="row">
+              <div class="col-12">
+                <h5>{{ page.event_title }}</h5>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <div class="lang-show-one-or-all">
+                  <h2 class="lang1" lang="en">Choose a party room now</h2>
+                  <h2 class="lang2" lang="de">Wähle jetzt einen Partyraum</h2>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+
+                <div class="lang-show-one-or-all">
+                  <p class="lang1" lang="en">
+                    Today's party goes over several rooms ... now choose your party room ... you can change at any time ...
+                  </p>
+                  <p class="lang2" lang="de">
+                    Die heutige Party geht über mehrere Räume ... wähle nun deinen Partyraum ... du kannst jederzeit wechseln ...
+                  </p>
+
+                  <p class="lang1" lang="en">
+                    And if you want to change the room later, then first close the window / browser tab with the old room
+                    so that the camera and microphone are not blocked by it ...
+                  </p>
+                  <p class="lang2" lang="de">
+                    Und falls du dann später den Raum wechseln möchtest, dann schließe zuerst das Fenster/Browser-Tab mit dem alten Raum,
+                    damit Kamera und Mikro nicht durch diesen blockiert werden ...
+                  </p>
+                </div>
+
+              </div>
+            </div>
+            <!--
+                            Info on correctly embedding Zoom as iframe: 
+                            https://devforum.zoom.us/t/embedding-zoom-in-web-page-as-an-iframe/39506/4
+                        
+                              <iframe class="embed-responsive-item w-100 h-100" src="https://us02web.zoom.us/j/5779481190?pwd=QytkdU54THcyS1loRGpyN3kyYlJRdz09"
+                                    frameborder="0" allow="camera;microphone" allowfullscreen="allowfullscreen"></iframe>
+                        -->
+        
+            <div class="row justify-content-center">
+
+              <!-- alternative image card layout: see https://getbootstrap.com/docs/5.0/components/card/#horizontal -->
+
+
+              <div class="col-12 col-lg-8 d-flex"  classOLD="col-sm-6 d-flex">
+                <div class="card flex-fill mt-2 border-dark" style="width: 18rem;">
+                  <img class="card-img-top" src="/images/room_pic_zoom_800x450.jpg" alt="Zoom meeting image">
+                  <div class="card-body">
+                    <div class="lang-show-one">
+                      <h4 class="lang1 card-title text-bright" lang="en">Dance Floor <span class="smalltext">(Zoom)</span></h4>
+                      <h4 class="lang2 card-title text-bright" lang="de">Dancefloor <span class="smalltext">(Zoom)</span></h4>
+                    </div>
+
+                    <div class="lang-show-one-or-all">
+                      <p class="lang1" lang="en">
+                        Here is the music ... here we dance ...
+                      </p>
+                      <p class="lang2" lang="de">
+                        Hier spielt die Musik ... hier tanzen wir ...
+                      </p>
+                    </div>
+    
+                    <a href="{{ event_video_meeting_url }}" target="extraTabName"
+                      class="btn btn-primary text-nowrap extra-button" data-toggle="collapse" role="button"
+                      data-target="#zoomInfoBlockCollapsableMultipleRooms" aria-expanded="false" aria-controls="zoomInfoBlockCollapsableMultipleRooms"
+                      onclick="$('#zoomInfoBlockCollapsableMultipleRooms').show(); loadExtraTab('{{ event_video_meeting_url }}'); return false;">
+                      <div class="lang-show-one-or-all">
+                        <div class="lang1" lang="en">To the Dance Floor <span class="smalltext">(Zoom)</span></div>
+                        <div class="lang2" lang="de">Zum Dancefloor <span class="smalltext">(Zoom)</span></div>
+                      </div>
+                    </a>
+        
+                    <div class="collapse" id="zoomInfoBlockCollapsableMultipleRooms">
+                      <hr>
+                      <div class="XXXcard XXXcard-body">
+                        <h4>Zoom-Meeting Details</h4>
+
+                        <dl class="row">
+                          <dt class="col-sm-6">Meeting ID:</dt>
+                          <dd class="col-sm-6">{{ event_video_meeting_id }}</dd>
+        
+                          <dt class="col-sm-6">Meeting PIN:</dt>
+                          <dd class="col-sm-6">{{ event_video_meeting_pin}}</dd>
+                        </dl>
+        
+                        <p>
+                          <a href="#" onclick="$('#zoomInfoBlockCollapsableMultipleRooms').hide(); return false;">
+                            <span class="lang-show-one-or-all">
+                              <span class="lang1" lang="en">Hide details</span>
+                              <span class="lang2" lang="de">Details verbergen</span>
+                            </span>
+                          </a>
+                        </p>
+        
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+
+
+              <div class="col-12 col-lg-8 d-flex"  classOLD="col-sm-6 d-flex">
+                <div class="card flex-fill mt-2 border-dark" style="width: 18rem;">
+                  <img class="card-img-top" src="/images/room_pic_d123-room_800x450.jpg" alt="Video lounge image">
+                  <div class="card-body">
+                    <div class="lang-show-one">
+                      <h4 class="lang1 card-title text-bright" lang="en">Video Lounge <span class="smalltext">(Web/Trember)</span></h4>
+                      <h4 class="lang2 card-title text-bright" lang="de">Video-Lounge <span class="smalltext">(Web/Trember)</span></h4>
+                    </div>
+
+                    <p class="card-text">
+                    </p>
+
+                    <div class="lang-show-one-or-all">
+                      <p class="lang1" lang="en">
+                        We can relax in the small, virtual seating areas of the video lounge to chat ...
+                      </p>
+                      <p class="lang2" lang="de">
+                        In kleinen, virtuellen Sitzecken der Video-Lounge können wir uns ganz entspannt unterhalten ...
+                      </p>
+
+                      <p class="lang1" lang="en">
+                        The video lounge uses spatial audio.
+                        This means that you can only hear and speak to the people nearby ...
+                      </p>
+                      <p class="lang2" lang="de">
+                        Die Video-Lounge verwendet räumliches Audio.
+                        Dies bedeutet, dass du nur die Personen in der Nähe hören und mit ihnen sprechen kannst ...
+                      </p>
+
+                    </div>
+
+
+                    <!-- display 1 button/link, depending on browser support: -->
+                    <div class="event-view event-supported-browser-view">
+                      <!-- supported browser: full features with JavaScript -->
+                      <a href="/rooms/room-video-lounge-web-trember?htmlclick=1"
+                        target="extraTabName"
+                        onclick="loadExtraTab('/rooms/room-video-lounge-web-trember?jsclick=1'); return false;"
+                        class="btn btn-primary text-nowrap extra-button">
+                        <div class="lang-show-one-or-all">
+                          <div class="lang1" lang="en">To the Video Lounge <span class="smalltext">(Web/Trember)</span></div>
+                          <div class="lang2" lang="de">Zur Video-Lounge <span class="smalltext">(Web/Trember)</span></div>
+                        </div>
+                      </a>
+                    </div>
+
+                    <div class="event-view event-unsupported-browser-view">
+                      <!-- unsupported browser: avoid JavaScript -->
+                      <a href="{{ event_web_trember_url }}"
+                        target="extraTabName"
+                        class="btn btn-primary text-nowrap extra-button">
+                        <div class="lang-show-one-or-all">
+                          <div class="lang1" lang="en">To the Video Lounge <span class="smalltext">(Web/Trember.)</span></div>
+                          <div class="lang2" lang="de">Zur Video-Lounge <span class="smalltext">(Web/Trember.)</span></div>
+                        </div>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12">
+                <br>
+              </div>
+
+            </div><!-- END: row -->
+
+          </div>
+        </section><!-- END: rooms rooms-multiple -->
+        <!-- END: ROOMS-MULTIPLE -->
+
+
+
+{% comment %}
+        <!-- TODO: FINAL IMPLEMENTATION OF HINTS POPUP(S)
+          -
+          - EVENT ROOM (MODAL) POPUPS
+          -
+          -->
+        <!-- Modal Dialog "videoLoungeHints-rooms-multiple" -->
+        <div class="modal fade" id="videoLoungeHints-rooms-multiple" role="dialog">
+          <div class="modal-dialog modal-dialog-centered">
+            <!-- Modal content-->
+            <div class="modal-content border-primary">
+              <div class="modal-header">
+                <div class="modal-title">
+                  <h6>Video-Lounge</h6>
+                  <!-- Tips for getting started -->
+                  <h2>Tipps zum Start</h2>
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onClick="startBackgroundAudio();">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <p>Gebe gleich deinen (Spitz-)Namen ein und aktiviere Kamera und Mikro ... du musst keine App installieren ...
+                  dann ...</p>
+        
+                <ol>
+                  <li>
+                    <p>Bewege deinen Video-Avatar per Drag-und-Drop,<br>
+                      Zoome: klicke [+]/[-], benutze das Maus-Rad oder nutze deine Finger-Gesten.
+                    </p>
+                  </li>
+        
+                  <li>
+                    <p>Die Video-Lounge verwendet räumliches Audio.
+                      Dies bedeutet, dass du nur die Personen in der Nähe hören und mit ihnen sprechen kannst.<br>
+                      Benutze möglichst ein Headset oder Kopfhörer.
+                    </p>
+                  </li>
+        
+                  <li>
+                    <p>Zum Verlassen der Video-Lounge oder zum Wechseln des Raumes, schließe einfach dein Browser-Tab/Fenster.
+                    </p>
+                  </li>
+                </ol>
+        
+                <p>Erkunde nun die Party ...
+                </p>
+        
+                <!--
+                        <p> Enter your (nick) name and activate the camera and mic ... you don't have to install an app ... then ... </p>
+        
+                        <ol>
+                          <li>
+                            <p> Drag and drop your video avatar, <br>
+                            To zoom: click [+] / [-], use the mouse wheel or use your finger gestures.
+                            </p>
+                          </li>
+        
+                          <li>
+                            <p>The video lounge uses spatial audio.
+                                This means that you can only hear and speak to the people nearby. <br>
+                            Use a headset or headphones whenever possible.
+                            </p>
+                          </li>
+        
+                          <li>
+                            <p>To leave the video lounge or to change the room, simply close your browser tab / window.
+                            </p>
+                          </li>
+                        </ol>
+        
+                        <p> Now explore the party ...
+        
+                        -->
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-primary" data-dismiss="modal"
+                  onClick="startBackgroundAudio();">Start ...</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- END: EVENT ROOM (MODAL) POPUPS -->
+{% endcomment %}

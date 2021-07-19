@@ -1,0 +1,32 @@
+{% comment %}
+  <!-- Show worldtime of the event for a single time zone -->
+  {% include event-v2-worldtimes-single-timezone.html
+    city_name = "Example city/Example country"
+    event_time_begin_utc = event_time_begin_utc
+    event_time_end_utc   = event_time_end_utc
+    event_date_is_daylight_saving_time = event_date_is_daylight_saving_time
+    timezone_offset_without_daylight_saving_time = "-05:00"
+    timezone_offset_with_daylight_saving_time    = "-04:00"
+    timezone_name_without_daylight_saving_time = "EST / UTC-5"
+    timezone_name_with_daylight_saving_time    = "EDT / UTC-4"
+  -%}
+  
+  <!-- ATTENTION: This alorithm assumes that daylight_saving_time is the same in any time zone, which is nor accurate! -->
+-->
+{% endcomment %}
+
+
+{%- assign timezone_name = include.timezone_name_without_daylight_saving_time -%} 
+{%- assign timezone_offset = include.timezone_offset_without_daylight_saving_time -%} 
+{%- if event_date_is_daylight_saving_time -%}
+    {%- assign timezone_name = include.timezone_name_with_daylight_saving_time -%} 
+    {%- assign timezone_offset = include.timezone_offset_with_daylight_saving_time -%} 
+{%- endif -%}
+
+{%- assign timezone_offset_seconds = "1970-01-01T00:00" | append: timezone_offset | date: "%s" -%}
+
+{%- assign event_time_begin_single  = event_time_begin_utc | date: "%s" | minus: timezone_offset_seconds | date: "%A, %I:%M %P" -%}
+{%- assign event_time_end_single    = event_time_end_utc   | date: "%s" | minus: timezone_offset_seconds | date: "%I:%M %P" -%}
+
+<span><b>{{ include.city_name }}</b>: {{ event_time_begin_single }} - {{ event_time_end_single }} ({{ timezone_name }})</span>
+

@@ -1,0 +1,209 @@
+---
+layout: default_with_body
+---
+
+        <!--
+          -
+          - VIDEO LOUNGE WEB/TREMBER
+          -
+          -->
+
+    <style>
+      /** override webi override */
+      h1, h2, h3, h4, h3, h5, h6 {
+          font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      }
+      .row>div {
+    	margin-top: 0;
+      }
+      .row {
+    	margin-top: 0;
+      }
+            
+      .card {
+        background-color: #000000;
+      }
+    </style>
+
+    <div class="video-lounge-web-trember">
+      <div class="d-flex flex-column overflow-hidden min-vh-100 vh-100">
+        <header class="header-banner-image-dark-still">
+          <div class="container">
+            <div class="row justify-content-center text-nowrap">
+              <div class="col-3">
+                <sub><sup>dance123.club</sup></sub>
+              </div>
+              <div class="col-6 text-center text-bright overflow-hidden">
+                <b>Video-Lounge <sub><sup>(Web/Trember)</sup></sub></b>
+              </div>
+              <div class="col-3 text-right">
+                <a id="musicControl" class="a-important" onClick=";" 
+                  data-toggle="collapse" role="button" data-target="#backgroundAudioCollapse" aria-expanded="false" aria-controls="backgroundAudioCollapse"
+                  title="Tune background music/Hintergrundmusik einstellen"
+                ><!--&#x1F509;&#x1F50A; &#x266b; &#x2699;-->
+                  <b class="XXXtext-bright">&#x266b;&#x2699;<!--<sub><sup>Settings</sup></sub>--></b>
+                </a>
+              </div>
+            </div>
+
+            <div class="collapse" id="backgroundAudioCollapse" style="margin-top: 0px;margin-bottom: 15px;">
+              <div class="row justify-content-center">
+                <audio id="backgroundAudio" controls preload="auto" NOTautoplay="autoplay">
+                  <!--<source src="https://ice1.somafm.com/u80s-128-mp3" type="audio/mpeg">-->
+                  <source src="https://c28.radioboss.fm:8378/stream" type="audio/mpeg">
+                </audio>
+              </div>
+            </div>
+
+            <script>
+
+              //
+              // audio player handling
+              //
+      
+              function startBackgroundAudio() {
+                var audio = document.getElementById("backgroundAudio");
+                var autostartAudio = false;
+                if (autostartAudio && audio) {
+                    //audio.volume = 0.1; // volume doesn't work on many browsers
+                    if (!isBrowserSafari) {
+                      console.log("startBackgroundAudio(): start now");
+                      audio.play();
+                      console.log("startBackgroundAudio(): start done");
+                    } else {
+                      console.log("startBackgroundAudio(): don't start audio because iOS/Safari doesn't support individual audio volume control");
+                    }
+                }
+              }
+
+            </script>
+
+            <div class="row justify-content-center text-nowrap">
+              <div class="col text-center">
+                <sub><sup><b>Unten nur weiß?</b> Versuche
+                <a href="{{ site.web_trember_url }}#page-href"
+                  target="extraTabName2"
+                  onclick="loadExtraTab2('{{ site.web_trember_url }}#page-js'); return false;"
+                >pure Video-Lounge in extra Fenster/Tab</a></sup></sub>
+              </div>
+            </div>
+          </div>   
+        </header>
+      
+        <main role="main" class="flex-grow-1 NOToverflow-auto w-100">
+
+          <iframe id="videoIframe" class="XXXembed-responsive-item w-100 h-100"
+          src="{{ site.web_trember_url }}#iframe-src"
+          frameborder="0" allow="camera;microphone" allowfullscreen="allowfullscreen"
+          XXXsandbox="allow-downloads-without-user-activation allow-downloads allow-forms allow-modals allow-orientation-lock allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-presentation allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation allow-top-navigation-by-user-activation"
+          ></iframe>
+
+          <script>
+            window.addEventListener("load", function(){
+              // automatically show hint's modal dialog
+              if (true) {
+                window.setTimeout(function() {
+                  $("#videoLoungeHints").modal("show");
+                }, 500);
+              }
+
+              /* automatically load iframe
+              if (true) {
+                document.getElementById('videoIframe').setAttribute("src", "{{ site.web_trember_url }}#src");
+              }
+              */
+            });
+          </script>
+
+          <!-- Modal Dialog "videoLoungeHints" -->
+          <div class="modal fade" id="videoLoungeHints" role="dialog">
+            <div class="modal-dialog modal-dialog-centered">
+              <!-- Modal content-->
+              <div class="modal-content border-primary">
+                <div class="modal-header">
+                  <div class="modal-title">
+                  <h6>Video-Lounge</h6>
+                  <!-- Tips for getting started -->
+                  <h2>Tipps zum Start</h2>
+                  </div>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close" onClick="startBackgroundAudio();">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <p>Gebe gleich deinen (Spitz-)Namen ein und aktiviere Kamera und Mikro ... du musst keine App installieren ... dann ...</p>
+
+                  <ol>
+                    <li>
+                      <p>Bewege deinen Video-Avatar per Drag-und-Drop,<br>
+                      Zoome: klicke [+]/[-], benutze das Maus-Rad oder nutze deine Finger-Gesten.
+                      </p>
+                    </li>
+
+                    <li>
+                      <p>Die Video-Lounge verwendet räumliches Audio.
+                        Dies bedeutet, dass du nur die Personen in der Nähe hören und mit ihnen sprechen kannst.<br>
+                      Benutze möglichst ein Headset oder Kopfhörer.  
+                      </p>
+                    </li>
+
+                    <li>
+                      <p>Zum Verlassen der Video-Lounge oder zum Wechseln des Raumes, schließe einfach dein Browser-Tab/Fenster.
+                      </p>
+                    </li>
+                  </ol>
+
+                  <p>Erkunde nun die Party ...
+                  </p>
+                  
+                  <!--
+                  <p> Enter your (nick) name and activate the camera and mic ... you don't have to install an app ... then ... </p>
+
+                  <ol>
+                    <li>
+                      <p> Drag and drop your video avatar, <br>
+                      To zoom: click [+] / [-], use the mouse wheel or use your finger gestures.
+                      </p>
+                    </li>
+
+                    <li>
+                      <p>The video lounge uses spatial audio.
+                          This means that you can only hear and speak to the people nearby. <br>
+                      Use a headset or headphones whenever possible.
+                      </p>
+                    </li>
+
+                    <li>
+                      <p>To leave the video lounge or to change the room, simply close your browser tab / window.
+                      </p>
+                    </li>
+                  </ol>
+
+                  <p> Now explore the party ...
+
+                  -->
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default btn-primary" data-dismiss="modal"
+                          onClick="startBackgroundAudio();"
+                    >Start ...</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </main>
+          
+          
+        <footer class="container-fluid flex-grow-0 flex-shrink-1">
+            <div class="container">
+              <div class="row w-100">
+                <sup>&copy; 2021 Berlin dance123<!-- <script>document.write("Info: "+roomInfo);</script></sup> -->
+              </div>
+            </div>
+        </footer>
+
+      </div>  
+    </div>
+
+            <!-- END: VIDEO LOUNGE WEB/TREMBER -->

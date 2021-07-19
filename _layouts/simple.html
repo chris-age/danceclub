@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="{{ site.lang | default: "de-DE" }}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="format-detection" content="telephone=no">
+
+{% seo %}
+    <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script src="{{ '/assets/js/respond.js' | relative_url }}"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="{{ '/assets/css/ie.css' | relative_url }}">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    
+    <meta property="og:image" prefix="og: https://ogp.me/ns#" content="/assets/images/icon2-192x192.png">
+    <meta property="og:image:height" prefix="og: https://ogp.me/ns#" content="196">
+    <meta property="og:image:width" prefix="og: https://ogp.me/ns#"  content="196">
+    <meta name="twitter:card" content="summary_large_image">
+    
+    <link rel="icon" href="/images/icon2-32x32.png" sizes="32x32" />
+    <link rel="icon" href="/images/icon2-192x192.png" sizes="192x192" />
+    <link rel="shortcut icon" href="/images/icon2-192x192.png" sizes="192x192">
+    <link rel="apple-touch-icon-precomposed" href="/images/icon2-180x180.png" />
+  </head>
+  <body>
+
+    <div class="wrapper">
+      <section>
+        <div id="title" style="margin: 0">
+          <h1>{{ site.title | default: site.github.repository_name }}</h1>
+          {% if site.description %}
+            <p>{{ site.description | default: site.github.project_tagline }}</p>
+          {% endif %}
+        </div>
+
+        {{ content }}
+
+      </section>
+    </div>
+    
+    {% if site.google_analytics_id %}
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+      <script async src="https://www.googletagmanager.com/gtag/js?id={{ site.google_analytics_id }}"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', '{{ site.google_analytics_id }}');
+      </script>
+    {% endif %}
+  </body>
+</html>

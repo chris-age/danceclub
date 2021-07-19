@@ -1,0 +1,39 @@
+{% comment %}
+  <!-- Show some test info -->
+  {%- include event-v2-testinfo.html -%}
+{% endcomment %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <h2>Test: Cleanup</h2>
+      <a href="#" onclick="pagedataClearAll();return false;">Delete Locale Storage</a>
+
+      <h2>Test: Language Test Info</h2>
+      <!-- show all languages tied together -->
+      <div class="lang-show-all">
+        <p class="lang1">... (lang-show-all lang1)</p>
+        <!-- hier weniger Margin -->
+        <p class="lang2">... (lang-show-all lang2)</p>
+      </div>
+
+      <!-- show all languages separately - without specific container -->
+        <p class="lang1">... (lang1)</p>
+        <!-- hier normale Margin -->
+        <p class="lang2">... (lang2)</p>
+
+
+      <!-- show only the current language (determined by JavaScript) -  eyample 1 -->
+      <div class="lang-show-one">
+        <p class="lang1" lang="en">... (lang-show-one a lang1 en)</p>
+        <p class="lang2" lang="de">... (lang-show-one a lang2 de)</p>
+      </div>
+      <!-- show only the current language (determined by JavaScript) -  eyample 2 -->
+      <div class="lang-show-one-or-all">
+        <p class="lang1" lang="de">... (lang-show-one-or-all b lang1 de)</p>
+        <p class="lang2" lang="en">... (lang-show-one-or-all b lang2 en)</p>
+      </div>
+
+    </div>
+  </div>
+</div>

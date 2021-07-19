@@ -1,0 +1,78 @@
+---
+title: Frequently Asked Questions
+description4body: Fragen und Antworten
+
+layout: default_with_section_html
+---
+        
+
+  <!-- table of contents -->
+  <a id="top" class="anchorPos"></a>
+  <div class="card bg-light mb-9" stylexxx="max-width: 18rem;">
+    <div class="card-header">
+      <div class="lang-show-one-or-all">
+        <h3 class="lang1" lang="en">Contents</h3>
+        <h3 class="lang2" lang="de">Übersicht</h3>
+      </div>
+
+      <ul>
+        {% for faq in site.faqs %}
+          <li>
+            <div class="lang-show-one-or-all">
+              <div class="lang1" lang="en">
+                <a href="#{{ faq.id_en }}">{{ faq.title_en }}</a>
+              </div>
+              <div class="lang2" lang="de">
+                <a href="#{{ faq.id_de }}">{{ faq.title_de }}</a>
+              </div>
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+
+    </div>
+  </div>
+
+  <br>
+  <br>
+
+
+  <!-- contents -->
+  {% for faq in site.faqs %}
+    <hr>
+
+    <a id="{{ faq.id_en }}" class="anchorPos"></a>
+    {%- if faq.id2_en -%}
+      <a id="{{ faq.id2_en }}" class="anchorPos"></a>
+    {%- endif %}
+
+    <div class="lang-show-one-or-all">
+
+      <div class="lang1" lang="en">
+        <h1>{{ faq.title_en }}</h1>
+        <div>
+          {{ faq.content_en }}
+        </div>
+      </div>
+
+      <a id="{{ faq.id_de }}" class="anchorPos"></a>
+      {%- if faq.id2_de -%}
+        <a id="{{ faq.id2_de }}" class="anchorPos"></a>
+      {%- endif %}
+
+      <div class="lang2" lang="de">
+        <h1>{{ faq.title_de }}</h1>
+        <div>
+          {{ faq.content_de }}
+        </div>
+      </div>
+
+    </div>
+
+    <p class="text-right smalltext">
+      <a href="#top">Up</a>
+    </p>
+
+  {% endfor %}
+
+

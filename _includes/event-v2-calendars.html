@@ -1,0 +1,53 @@
+{% comment %}
+  <!-- Show all calendar links -->
+  {%- include event-v2-calendars.html -%}
+{% endcomment %}
+
+
+
+
+
+ 
+<!-- single add-to-calendar link -->
+{%- include event-v2-calendar-single.html
+  service_name = "apple"
+  display_name = "Apple"
+%}
+&nbsp;•&nbsp;
+
+<!-- single add-to-calendar link -->
+{%- include event-v2-calendar-single.html
+  service_name = "google"
+  display_name = "Google"
+%}
+&nbsp;•&nbsp;
+
+{% comment %}
+    <!-- REMOVED BECAUSE: addevent.com asks for app permissions to access the user calendar-->
+    <!-- single add-to-calendar link -->
+    {%- include event-v2-calendar-single.html
+      service_name = "office365"
+      display_name = "Office 365"
+    %}
+    &nbsp;•&nbsp;
+
+    <!-- single add-to-calendar link -->
+    {%- include event-v2-calendar-single.html
+      service_name = "outlook"
+      display_name = "Outlook"
+    %}
+    &nbsp;•&nbsp;
+
+    <!-- single add-to-calendar link -->
+    {%- include event-v2-calendar-single.html
+      service_name = "outlookcom"
+      display_name = "Outlook.com"
+    %}
+    &nbsp;•&nbsp;
+{% endcomment %}
+
+<!-- single add-to-calendar link -->
+{%- include event-v2-calendar-single.html
+  service_name = "yahoo"
+  display_name = "Yahoo"
+%}

@@ -1,0 +1,30 @@
+---
+layout: default_with_body
+---
+
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+
+            <section>
+
+
+              <div id="title" style="margin: 0">
+                <h1>{{ page.title4body | default: page.title | default: site.title }}</h1>
+                {% if page.description4body or page.description or site.description %}
+                  <p>{{ page.description4body | default: page.description | default: site.description }}</p>
+                {% endif %}
+              </div>
+
+
+              {{ content }}
+    
+              <br>
+              <br>       
+            
+            </section>
+
+          </div>
+        </div>
+      </div>
+

@@ -1,0 +1,99 @@
+{% comment %}
+  <!-- Show worldtimes of the event for major time zones -->
+  {%- include event-v2-worldtimes.html -%}
+{% endcomment %}
+
+
+<!-- Show worldtime of the event for a single time zone -->
+{% include event-v2-worldtimes-single-timezone.html
+  city_name = "San Francisco/USA"
+  event_time_begin_utc = event_time_begin_utc
+  event_time_end_utc   = event_time_end_utc
+  event_date_is_daylight_saving_time = event_date_is_daylight_saving_time
+  timezone_offset_without_daylight_saving_time = "-08:00"
+  timezone_offset_with_daylight_saving_time    = "-07:00"
+  timezone_name_without_daylight_saving_time = "PST / UTC-8"
+  timezone_name_with_daylight_saving_time    = "PDT / UTC-7"
+-%}<br>
+<!-- Show worldtime of the event for a single time zone -->
+{% include event-v2-worldtimes-single-timezone.html
+  city_name = "Lima/Peru"
+  event_time_begin_utc = event_time_begin_utc
+  event_time_end_utc   = event_time_end_utc
+  event_date_is_daylight_saving_time = event_date_is_daylight_saving_time
+  timezone_offset_without_daylight_saving_time = "-05:00"
+  timezone_offset_with_daylight_saving_time    = "-05:00"
+  timezone_name_without_daylight_saving_time = "PET / UTC-5:00"
+  timezone_name_with_daylight_saving_time    = "PET / UTC-5:00"
+-%}<br>
+<!-- Show worldtime of the event for a single time zone -->
+{% include event-v2-worldtimes-single-timezone.html
+  city_name = "New York/USA"
+  event_time_begin_utc = event_time_begin_utc
+  event_time_end_utc   = event_time_end_utc
+  event_date_is_daylight_saving_time = event_date_is_daylight_saving_time
+  timezone_offset_without_daylight_saving_time = "-05:00"
+  timezone_offset_with_daylight_saving_time    = "-04:00"
+  timezone_name_without_daylight_saving_time = "EST / UTC-5"
+  timezone_name_with_daylight_saving_time    = "EDT / UTC-4"
+-%}<br>
+<!-- Show worldtime of the event for a single time zone -->
+{% include event-v2-worldtimes-single-timezone.html
+  city_name = "London/UK"
+  event_time_begin_utc = event_time_begin_utc
+  event_time_end_utc   = event_time_end_utc
+  event_date_is_daylight_saving_time = event_date_is_daylight_saving_time
+  timezone_offset_without_daylight_saving_time = "+00:00"
+  timezone_offset_with_daylight_saving_time    = "+01:00"
+  timezone_name_without_daylight_saving_time = "GMT / UTC"
+  timezone_name_with_daylight_saving_time    = "BST / UTC+1"
+-%}<br>
+<!-- Show worldtime of the event for a single time zone -->
+{% include event-v2-worldtimes-single-timezone.html
+  city_name = "Berlin/Germany"
+  event_time_begin_utc = event_time_begin_utc
+  event_time_end_utc   = event_time_end_utc
+  event_date_is_daylight_saving_time = event_date_is_daylight_saving_time
+  timezone_offset_without_daylight_saving_time = "+01:00"
+  timezone_offset_with_daylight_saving_time    = "+02:00"
+  timezone_name_without_daylight_saving_time = "CET / UTC+1"
+  timezone_name_with_daylight_saving_time    = "CEST / UTC+2"
+-%}<br>
+<!-- Show worldtime of the event for a single time zone -->
+{% include event-v2-worldtimes-single-timezone.html
+  city_name = "Moscow/Russia"
+  event_time_begin_utc = event_time_begin_utc
+  event_time_end_utc   = event_time_end_utc
+  event_date_is_daylight_saving_time = event_date_is_daylight_saving_time
+  timezone_offset_without_daylight_saving_time = "+03:00"
+  timezone_offset_with_daylight_saving_time    = "+03:00"
+  timezone_name_without_daylight_saving_time = "MSK / UTC+3"
+  timezone_name_with_daylight_saving_time    = "MSK / UTC+3"
+-%}<br>
+<!-- Show worldtime of the event for a single time zone -->
+{% include event-v2-worldtimes-single-timezone.html
+  city_name = "New Delhi/India"
+  event_time_begin_utc = event_time_begin_utc
+  event_time_end_utc   = event_time_end_utc
+  event_date_is_daylight_saving_time = event_date_is_daylight_saving_time
+  timezone_offset_without_daylight_saving_time = "+05:30"
+  timezone_offset_with_daylight_saving_time    = "+05:30"
+  timezone_name_without_daylight_saving_time = "IST / UTC+5:30"
+  timezone_name_with_daylight_saving_time    = "IST / UTC+5:30"
+-%}<br>
+<!-- Show worldtime of the event for a single time zone -->
+{% include event-v2-worldtimes-single-timezone.html
+  city_name = "Tokio/Japan"
+  event_time_begin_utc = event_time_begin_utc
+  event_time_end_utc   = event_time_end_utc
+  event_date_is_daylight_saving_time = event_date_is_daylight_saving_time
+  timezone_offset_without_daylight_saving_time = "+09:00"
+  timezone_offset_with_daylight_saving_time    = "+09:00"
+  timezone_name_without_daylight_saving_time = "JST / UTC+9"
+  timezone_name_with_daylight_saving_time    = "JST / UTC+9"
+-%}<br>
+
+...<br>
+
+<span><b>Add event to your calendar</b>:&nbsp;
+{%- include event-v2-calendars.html -%} </span><br>
