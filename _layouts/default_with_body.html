@@ -1,0 +1,19 @@
+---
+layout: default_base
+---
+
+
+    <!-- Show header navigation banner -->
+    {%  if page.skip_header -%}
+    {%- else -%}
+        {% include dance-v2-header-navigation-banner.html %}
+    {%- endif %}
+
+
+    <!-- main content -->
+    {{ content }}
+
+
+    <!-- Show footer navigation banner -->
+    {% include dance-v2-footer-navigation-banner.html %}
+

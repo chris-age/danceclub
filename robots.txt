@@ -1,0 +1,36 @@
+# robots.txt zu dance...
+
+User-agent: Googlebot
+User-agent: Bingbot
+Disallow: /intern
+Disallow: /READ
+Disallow: *.sh
+Disallow: /old
+#Disallow: /assets
+Allow:    /event-images
+Disallow: /ce
+Disallow: /dem
+Disallow: /joi
+Disallow: /test
+
+User-agent: *
+Disallow: /intern
+Disallow: /READ
+Disallow: *.sh
+Disallow: /old
+#Disallow: /assets
+#Allow:    /assets/images/
+Allow:    /event-images
+Disallow: /ce
+Disallow: /dem
+Disallow: /joi
+Disallow: /test
+
+# will probably not work (https://blog.reputationx.com/block-wayback-machine)
+User-agent: archive.org_bot
+Disallow: /
+
+# will probably not work (https://blog.reputationx.com/block-wayback-machine)
+User-agent: ia_archiver
+Disallow: /
+

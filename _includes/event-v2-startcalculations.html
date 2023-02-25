@@ -1,0 +1,144 @@
+{%- comment -%}
+  <!-- Calculation of widely used liquid variables for event-v2 -->
+  {%- include event-v2-startcaluations.html -%}
+{%- endcomment -%}
+
+
+<!-- basic path/URL variables (or defaults) -->
+{%- assign event_path = page.permalink | default: page.url -%}
+{%- assign meta_refresh_content = page.meta_refresh_content -%}
+
+<!-- basic page/event variables (or defaults) -->
+{%- assign event_title = page.event_title | default: layout.default_event_title -%}
+{%- assign event_subtitle = page.event_subtitle | default: layout.default_event_subtitle -%}
+{%- assign event_description = page.event_description | default: event_subtitle | default: layout.default_event_description -%}
+{%- assign event_keywords = page.event_keywords | default: "" -%}
+{%- assign event_keywords = layout.additional_event_keywords | append: event_keywords -%}
+{%- assign event_lang_main = page.event_lang_main | default: layout.default_event_lang_main | slice: 0, 2 -%}
+{%- assign event_image_path = page.event_image_path | default: layout.default_event_image_path -%}
+
+<!-- performer and organizer variables (or defaults) -->
+{%- assign site_name = page.site_name | default: layout.default_site_name -%}
+{%- assign event_performer_name = page.event_performer_name | default: layout.default_event_performer_name -%}
+{%- assign event_organizer_name = page.event_organizer_name | default: layout.default_event_organizer_name -%}
+{%- assign event_organizer_url = page.event_organizer_url | default: layout.default_event_organizer_url -%}
+
+<!-- event registration configuration variables (or defaults) -->
+{%- assign is_event_registration_disabled = page.is_event_registration_disabled | default: false -%}
+{%- assign event_registration_email_is_optional_with_optcodes = page.event_registration_email_is_optional_with_optcodes -%}
+{%- assign event_required_registration_codes = page.event_required_registration_codes -%}
+{%- assign is_event_registration_name_required = page.is_event_registration_name_required | default: false -%}
+{%- assign is_event_registration_gender_required = page.is_event_registration_gender_required | default: false-%}
+{%- assign is_event_registration_comment_required = page.is_event_registration_comment_required | default: false -%}
+{%- assign default_r = page.default_r -%}
+
+<!-- room+ variables (or defaults) -->
+{%- assign event_video_meeting_url = page.event_video_meeting_url | default: site.video_meeting_url -%}
+{%- assign event_video_meeting_id = page.event_video_meeting_id | default: site.video_meeting_id -%}
+{%- assign event_video_meeting_pin = page.event_video_meeting_pin | default: site.video_meeting_pin -%}
+{%- assign event_web_trember_url = page.event_web_trember_url | default: site.web_trember_url -%}
+{%- assign is_event_mainroom_disabled = page.is_event_mainroom_disabled | default: false -%}
+{%- assign event_mainroom_url = page.event_mainroom_url | default: layout.default_event_mainroom_url | default: event_video_meeting_url -%}
+<!-- assign is_event_rooms_multiple_enabled -->{%- if page.is_event_rooms_multiple_enabled -%}{%- if page.is_event_rooms_multiple_enabled contains 'false' -%}{%- assign is_event_rooms_multiple_enabled=false -%}{%- else -%}{%- assign is_event_rooms_multiple_enabled=true -%}{%- endif -%}{%- else -%}{%- assign is_event_rooms_multiple_enabled=false -%}{%- endif -%}
+<!-- assign is_event_room_single_enabled -->{%- if is_event_rooms_multiple_enabled -%}{%- assign is_event_room_single_enabled=false -%}{%- else -%}{%- assign is_event_room_single_enabled=true -%}{%- endif -%}
+<!-- assign is_event_rooms_all_enabled -->{%- if page.is_event_rooms_all_enabled -%}{%- if page.is_event_rooms_all_enabled contains 'false' -%}{%- assign is_event_rooms_all_enabled=false -%}{%- else -%}{%- assign is_event_rooms_all_enabled=true -%}{%- endif -%}{%- else -%}{%- assign is_event_rooms_all_enabled=false -%}{%- endif -%}
+
+
+
+<!-- language and locale calculations -->
+{%- assign event_lang_en = "en" -%}
+{%- assign event_lang_de = "de" -%}
+{%- assign event_lang_es = "es" -%}
+{%- assign event_locale_en = "en-GB" -%}
+{%- assign event_locale_de = "de-DE" -%}
+{%- assign event_locale_es = "es-ES" -%}
+{%- if event_lang_main == "de" -%}
+  {%- assign event_lang_main   = event_lang_de -%}
+  {%- assign event_locale_main = event_locale_de -%}
+  {%- assign event_lang_alternate   = event_lang_en -%}
+  {%- assign event_locale_alternate = event_locale_en -%}
+{%- elsif event_lang_main == "es" -%}
+  {%- assign event_lang_main   = event_lang_es -%}
+  {%- assign event_locale_main = event_locale_es -%}
+  {%- assign event_lang_alternate   = event_lang_en -%}
+  {%- assign event_locale_alternate = event_locale_en -%}
+{%- else -%}
+  {%- assign event_lang_main   = event_lang_en -%}
+  {%- assign event_locale_main = event_locale_en -%}
+  {%- assign event_lang_alternate   = event_lang_de -%}
+  {%- assign event_locale_alternate = event_locale_de -%}
+{%- endif -%}
+
+
+
+<!-- date and time calculations -->
+{%- assign event_time_begin_utc = page.event_time_begin_utc -%}
+{%- assign event_date_begin_nice_default = event_time_begin_utc | date: "%A, %B %d, %y" -%}
+
+{%- assign event_date_is_daylight_saving_time = true -%}
+{%- if event_time_begin_utc>"2021-10-31T00:00Z" and event_time_begin_utc<"2022-03-27T02:00Z" -%}{%- assign event_date_is_daylight_saving_time = false -%}{%- endif -%}
+{%- if event_time_begin_utc>"2022-10-30T00:00Z" and event_time_begin_utc<"2023-03-26T02:00Z" -%}{%- assign event_date_is_daylight_saving_time = false -%}{%- endif -%}
+
+{%- assign event_date_timezone_nice = "Berlin Time Zone / CET / MEZ / UTC+1" -%}
+{%- assign event_time_zone_diff = 1 | times: 3600 -%} 
+{%- if event_date_is_daylight_saving_time -%}
+  {%- assign event_date_timezone_nice = "Berlin Time Zone / CEST / MESZ / UTC+2" -%}
+  {%- assign event_time_zone_diff = 2 | times: 3600 -%} 
+{%- endif -%}
+
+{%- assign event_starts_earlier_seconds = page.event_starts_earlier_seconds | default: layout.default_event_starts_earlier_seconds -%}
+{%- assign event_ends_later_seconds_anonymous_user  = page.event_ends_later_seconds_anonymous_user  | default: layout.default_event_ends_later_seconds_anonymous_user  -%}
+{%- assign event_ends_later_seconds_registered_user = page.event_ends_later_seconds_registered_user | default: layout.default_event_ends_later_seconds_registered_user -%}
+
+{%- comment -%}
+<!-- event_date_begin_nice: nice date in event main language, e.g. "Saturday, September 4, 2021" (default lang en) -->
+<!-- event_time_begin_nice: nice time in event main language, e.g. "9:00 pm" (default) -->
+<!-- event_date_begin_nice_en: date time in en -->
+<!-- event_time_begin_nice_en: nice time in en -->
+<!-- event_date_begin_nice_de: date time in en -->
+<!-- event_time_begin_nice_de: nice time in de -->
+{%- endcomment -%}
+{%- assign event_time_begin_local_s = event_time_begin_utc | date: "%s" | plus: event_time_zone_diff -%} 
+
+{%- assign event_date_begin_nice_en = event_time_begin_local_s | date: "%A, %B %e, %Y" -%}
+{%- assign event_time_begin_nice_en = event_time_begin_local_s | date: "%I:%M %P" -%}
+<!-- alternative: filter date_to_long_string (https://jekyllrb.com/docs/liquid/filters/) -->
+{%- assign event_date_begin_nice_de = event_time_begin_local_s | date: "%A, %e. %B, %Y" -%}
+{%- assign event_date_begin_nice_de = event_date_begin_nice_de | replace: "Moday", "Montag" | replace: "Tuesday", "Dienstag" | replace: "Wednesday", "Mittwoch" | replace: "Thursday", "Donnerstag" | replace: "Friday", "Freitag" | replace: "Saturday", "Samstag" | replace: "Sunday", "Sonntag" -%}
+{%- assign event_date_begin_nice_de = event_date_begin_nice_de | replace: "January", "Januar" | replace: "February", "Februar" | replace: "March", "März" | replace: "April", "April" | replace: "May", "Mai" | replace: "June", "Juni" | replace: "July", "Juli" | replace: "August", "August" | replace: "September", "September" | replace: "October", "Oktober" | replace: "November", "November" | replace: "December", "Dezember" -%}
+{%- assign event_time_begin_nice_de = event_time_begin_local_s  | date: "%k:%M Uhr" -%}
+
+{%- if event_lang_main == "de" -%}
+  {%- assign event_date_begin_nice_default = event_date_begin_nice_de -%}
+  {%- assign event_time_begin_nice_default = event_time_begin_nice_de -%}
+{%- else -%}
+  {%- assign event_date_begin_nice_default = event_date_begin_nice_en -%}
+  {%- assign event_time_begin_nice_default = event_time_begin_nice_en -%}
+{%- endif -%}
+{%- comment -%}
+  <!-- NOT USED: page.event_date_begin_nice + page.event_time_begin_nice -->
+  {%- assign event_date_begin_nice = page.event_date_begin_nice | default: event_date_begin_nice_default -%}
+  {%- assign event_time_begin_nice = page.event_time_begin_nice | default: event_time_begin_nice_default -%}
+{%- endcomment -%}
+{%- assign event_date_begin_nice = event_date_begin_nice_default -%}
+{%- assign event_time_begin_nice = event_time_begin_nice_default -%}
+
+<!-- event_time_end_utc: e.g. "2021-09-04T22:30:00Z" -->
+{%- assign event_time_duration_secs = "1970-01-01T" | append: page.event_time_duration_hours_mins | append: "Z" | date: "%s" -%}
+
+{%- assign event_time_end_utc = event_time_begin_utc | date: "%s" | plus: event_time_duration_secs | date: "%Y-%m-%dT%H:%MZ" -%} 
+
+<!-- -->
+<!-- {{ event_time_duration_secs }} -->
+<!-- event_time_begin_utc={{ event_time_begin_utc }} -->
+<!-- event_time_end_utc={{ event_time_end_utc }} -->
+
+
+
+
+{%- comment -%}
+  <!-- alternative implemention / code snippets -->
+  {%- assign event_title = page.event_title | default: layout.default_event_title | default: page.title | default: 'dance123.club' -%}
+  {%- assign event_image_path = page.event_image | default: page.image | default: '/images/gifer.com.Wt3J.7157f1fea0e67b3b1b6a2ec8c2be299f.png' -%}
+  {%- capture example -%}{{ page.example | default: '' }}{%- endcapture -%}
+{%- endcomment -%}

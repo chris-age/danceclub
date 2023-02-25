@@ -1,0 +1,278 @@
+{% comment %}
+  <!-- Show event image banner -->
+  {% include event-v2-image-banner.html %}
+{% endcomment %}
+
+        <!--
+          -
+          - EVENT IMAGE BANNER
+          -
+          -->
+        <div class="event-banner-container">
+          <div class="event-banner-box event-banner-box-background" style="background-image: url('{{ event_image_path }}');"></div>
+          <div class="event-banner-box event-banner-box-backgroundoverlay"></div>
+          <div class="event-banner-box event-banner-box-content"> 
+            <div class="container event-banner-content-center">
+              <div class="row">
+                <div class="col-12">
+    
+    
+                    <br>
+                    <h2>{{ event_title }}</h2>
+                    {% if event_subtitle == "" or event_subtitle == " " %}
+                      <!-- no h3-subtitle -->
+                    {% else %}
+                      <h3>{{ event_subtitle }}</h3>
+                    {% endif %}
+    
+
+                    <!-- event is in future -->
+                    <div class="event-view event-infuture-view">
+                      <!-- count down -->
+                      <div>
+                        <span class="lang-show-one">
+                          <span class="lang1" lang="en">Starts here in</span>
+                          <span class="lang2" lang="de">Startet hier in</span>
+                        </span>
+                        <br>
+                        <b><span class="event-countdown">
+                          <span class="lang-show-one">
+                            <span class="lang1" lang="en">few moments</span>
+                            <span class="lang2" lang="de">Kürze</span>
+                          </span>
+                        </span></b>
+                      </div>
+
+                      <!-- button to register? -->
+                      <div class="event-view event-supported-browser-view">
+                        <div class="event-view event-anonymoususer-view">
+                          <!-- user not registered (yet) -->
+                          <div class="event-view event-registration-view">
+                            <!-- CASE: offer user pre-registration -->
+                            <button type="button" class="btn btn-info btn-lg event-button register-button-for-autostart" data-toggle="modal" data-target="#registerSimpleModal" onClick="logUserAction('registerSimpleModal');">
+                              <div class="lang-show-one-or-all">
+                                <div class="lang1" lang="en">
+                                  Reserve a free spot now ...
+                                </div>
+                                <div class="lang2" lang="de">
+                                  Jetzt einen kostenlosen Platz reservieren ...
+                                </div> 
+                              </div>
+                            </button>
+                          </div>
+                          <div class="event-view event-noregistration-view">
+                            <!-- CASE: don't allow pre-registration -->
+                            <button type="button" class="btn btn-info btn-lg event-button-info">
+                              <div class="lang-show-one-or-all">
+                                <div class="lang1" lang="en">
+                                  Currently no reservation ...
+                                </div>
+                                <div class="lang2" lang="de">
+                                  Derzeit keine Reservierung möglich ...
+                                </div> 
+                              </div>
+                            </button>
+                          </div>
+                        </div>
+                        <div class="event-view event-registereduser-view">
+                          <!-- CASE: user already registered -->
+                          <div class="btn btn-success event-button-success NOTevent-button-compact" onclick="$('#shareEventModal').modal('show');" };">
+                            <div class="lang-show-one">
+                              {% comment %}
+                              <!--
+                              <div class="lang1" lang="en">
+                                Your spot is reserved for <span class="user-email">you</span> ...<br>
+                                After opening, join here on this website ...<br>
+                                <span class="smalltext"><a href="#" onclick="$('#registerSimpleModal').modal('show');return false;">I have a different email / change</a></span><br>
+                              </div>
+                              <div class="lang2" lang="de">
+                                Dein Platz ist für <span class="user-email">dich</span> reserviert ...<br>
+                                Nach Eröffnung Zugang hier auf dieser Webseite ...<br>
+                                <span class="smalltext"><a href="#" onclick="$('#registerSimpleModal').modal('show');return false;">Ich habe eine andere E-Mail / ändern</a></span><br>
+                              </div> 
+                              -->
+                              {% endcomment %}
+                              <div class="lang1" lang="en">
+                                Your spot is reserved ...<br>
+                                <span class=""><a href="#" onclick="$('#shareEventModal').modal('show');event.stopPropagation();return false;">Invite your friends now ...</a></span>
+                              </div>
+                              <div class="lang2" lang="de">
+                                Dein Platz ist reserviert ...<br>
+                                <span class=""><a href="#" onclick="$('#shareEventModal').modal('show');event.stopPropagation();return false;">Lade jetzt deine Freunde ein ...</a></span>
+                              </div> 
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="event-view event-unsupported-browser-view">
+                        <!-- CASE: unsupported browser: don't do pre-registration -->
+                        <div class="btn btn-success event-button-success NOTevent-button-compact" onclick="$('#shareEventModal').modal('show');" };">
+                          <div class="lang-show-one">
+                            <div class="lang1" lang="en">
+                              Join the event here as soon as it starts ...<br>
+                              <span class=""><a href="#" onclick="$('#shareEventModal').modal('show');event.stopPropagation();return false;">Until then, invite your friends ...</a></span>
+                            </div>
+                            <div class="lang2" lang="de">
+                              Einlass zum Event hier, sobald es losgeht ...<br>
+                              <span class=""><a href="#" onclick="$('#shareEventModal').modal('show');event.stopPropagation();return false;">Bis dahin lade deine Freunde ein ...</a></span>
+                            </div> 
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- footer of the banner -->
+                      <div>
+                        <div class="lang-show-one">
+                          <div class="lang1" lang="en">
+                            <div><b>{{ event_date_begin_nice_en }}</b></div>
+                            <div><b>{{ event_time_begin_nice_en }}</b></div>
+                          </div>
+                          <div class="lang2" lang="de">
+                            <div><b>{{ event_date_begin_nice_de }}</b></div>
+                            <div><b>{{ event_time_begin_nice_de }}</b></div>
+                          </div> 
+                        </div>
+                              
+                        <div class="smalltext">
+                          ({{ event_date_timezone_nice }})<br>
+                          Private Party - www.dance123.club
+                        </div>
+                      </div>
+
+                    </div>
+
+
+                    <!-- event is now -->
+                    <div class="event-view event-now-view">
+                      <!-- count down replacement-->
+                      <div>
+                        <span class="lang-show-one-or-all">
+                          <span class="lang1" lang="en">Party is on ...</span>
+                          <span class="lang2" lang="de">Party läuft ...</span>
+                        </span>
+                      </div>
+
+                      <!-- button to register/join? -->
+                      <div class="event-view event-supported-browser-view">
+                        <div class="event-view event-noregistration-view">
+                          <!-- CASE: don't allow (pre-)registration -->
+                          <button type="button" class="btn btn-info btn-lg event-button-info">
+                            <div class="lang-show-one-or-all">
+                              <div class="lang1" lang="en">
+                                Guest already got their access data via email ...
+                              </div>
+                              <div class="lang2" lang="de">
+                                Gäste haben ihre Zugangsdaten per E-Mail erhalten ...
+                              </div> 
+                            </div>
+                          </button>
+                        </div>
+                        <div class="event-view event-registration-view">
+                          <!-- CASE: offer register/join -->
+                          <div class="event-view event-anonymoususer-view">
+                            <!-- user not registered (yet) -->
+                            <button type="button" class="btn btn-info btn-lg event-button register-button-for-autostart" data-toggle="modal" data-target="#registerSimpleModal" onClick="logUserAction('registerSimpleModal');">
+                              <div class="lang-show-one-or-all">
+                                <div class="lang1" lang="en">
+                                  Join the party for free now ...
+                                </div>
+                                <div class="lang2" lang="de">
+                                  Jetzt kostenlos mitfeiern ...
+                                </div> 
+                              </div>
+                            </button>
+                          </div>
+                          <div class="event-view event-registereduser-view">
+                            <!-- CASE: user already registered -->
+                            <div class="btn btn-success event-button-success" onclick="scrollToAnchor('event-rooms-start', true);" };">
+                              <div class="lang-show-one">
+                                <div class="lang1" lang="en">
+                                  Welcome <span class="user-email"></span> ...<br>
+                                  Details in the next section ...<br>
+                                  <span class="smalltext"><a href="#" onclick="$('#registerSimpleModal').modal('show');event.stopPropagation();return false;">I have a different email / change</a></span><br>
+                                </div>
+                                <div class="lang2" lang="de">
+                                  Willkommen <span class="user-email"></span> ...<br>
+                                  Details im nächsten Abschnitt ...<br>
+                                  <span class="smalltext"><a href="#" onclick="$('#registerSimpleModal').modal('show');event.stopPropagation();return false;">Ich habe eine andere E-Mail / ändern</a></span><br>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="event-view event-unsupported-browser-view">
+                        <!-- CASE: unsupported browser: don't do pre-registration, but allow to join now -->
+                        <button type="button" class="btn btn-info btn-lg event-button register-button-for-autostart" data-toggle="modal" data-target="#registerSimpleModal" onClick="logUserAction('registerSimpleModal');">
+                          <div class="lang-show-one-or-all">
+                            <div class="lang1" lang="en">
+                              Join the party for free now ....
+                            </div>
+                            <div class="lang2" lang="de">
+                              Jetzt kostenlos mitfeiern ....
+                            </div> 
+                          </div>
+                        </button>
+                      </div>
+
+                      <!-- footer of the banner -->
+                      <div>
+                        <div class="lang-show-one">
+                          <div class="lang1" lang="en">
+                            <div><b>{{ event_date_begin_nice_en }}</b></div>
+                            <div><b>*** NOW ***</b></div>
+                          </div>
+                          <div class="lang2" lang="de">
+                            <div><b>{{ event_date_begin_nice_de }}</b></div>
+                            <div><b>*** JETZT ***</b></div>
+                          </div> 
+                        </div>
+                              
+                        <div class="smalltext">
+                          <br>
+                          Private Party - www.dance123.club
+                        </div>
+                      </div>
+
+                    </div>
+
+
+
+                    <!-- event is over -->
+                    <div class="event-view event-over-view">
+                      <button type="button" class="btn btn-info btn-lg event-button-over" disabled="true">
+                        <div class="lang-show-one-or-all">
+                          <div class="lang1" lang="en">
+                            This party is already over!<br>More events by newsletter below ...
+                          </div>
+                          <div class="lang2" lang="de">
+                            Diese Party ist bereits vorbei!<br>Weitere Events per Newsletter unten ...
+                          </div> 
+                        </div>
+                      </button>
+
+                      <!-- footer of the banner -->
+                      <div>
+                        <div class="lang-show-one">
+                          <div class="lang1" lang="en">
+                            <div class="smalltext">{{ event_date_begin_nice_en }}</div>
+                          </div>
+                          <div class="lang2" lang="de">
+                            <div class="smalltext">{{ event_date_begin_nice_de }}</div>
+                          </div> 
+                        </div>
+                              
+                        <div class="smalltext">
+                          <br>
+                          Private Party - www.dance123.club
+                        </div>
+                      </div>
+                    </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- END: EVENT IMAGE BANNER -->

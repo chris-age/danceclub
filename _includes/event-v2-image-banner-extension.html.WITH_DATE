@@ -1,0 +1,59 @@
+{% comment %}
+  <!-- Show event image banner extansion -->
+  {% include event-v2-image-banner-extansion.html %}
+{% endcomment %}
+
+        <!--
+          -
+          - EVENT IMAGE BANNER EXTENSION
+          -
+          -->
+
+        <!-- user registration status details - below the image banner -->
+        <div class="event-view event-infuture-view">
+          <div class="event-view event-registereduser-view">
+            <div class="text-center smalltext">
+              <div class="lang-show-one-or-all ">
+                <div class="lang1" lang="en">
+                  Your spot is reserved for <span class="user-email">you</span> ...<br>
+                  After opening, join here on this website ...<br>
+                  <span class="smalltext"><a href="#" onclick="$('#registerSimpleModal').modal('show');return false;">I have a different email / change</a></span><br>
+                </div>
+                <div class="lang2" lang="de">
+                  Dein Platz ist für <span class="user-email">dich</span> reserviert ...<br>
+                  Nach Eröffnung Zugang hier auf dieser Webseite ...<br>
+                  <span class="smalltext"><a href="#" onclick="$('#registerSimpleModal').modal('show');return false;">Ich habe eine andere E-Mail / ändern</a></span><br>
+                </div> 
+              </div>
+              <div class="small-line">
+                <br>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Worldwide opening times -->
+        <div class="container">
+          <div class="row">
+            <div class="col-12">
+        
+              <div class="event-view event-infuture-view text-center">
+                <div class="content-timezones" lang="en">
+                  <b>Worldwide opening times:</b><br>
+                </div>
+                <div class="smalltext small-line">
+                      <!-- Show worldtimes of the event for major time zones -->
+                      {%- include event-v2-worldtimes.html -%}
+                      <br>
+                </div>
+                    <!--
+                        <br>
+                        <b>Zoom meeting doors open 30 mins earlier.</b>
+                        -->
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- END: EVENT IMAGE BANNER EXTENSION -->

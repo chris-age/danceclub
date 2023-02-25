@@ -1,0 +1,391 @@
+{% comment %}
+  <!-- Helper JavaScript for event (modal) dialogs -->
+  {%- include event-v2-registration-dialogs-js -%}
+{% endcomment %}
+
+
+<!-- EVENT registration dialogs JavaScript -->
+<script>
+  //
+  // configure modal dialogs and HTML form validation
+  //
+  var customFormValidationOK = false;
+
+  // optional data fields - in addition to "emailOrPhone"
+  var formDataFieldIDs = ["registrationCode", "registrationName", "registrationComment"];
+  var formDataFieldNames = ["registrationGender"];
+
+  // JavaScript for disabling form submissions if there are invalid fields
+  function addSubmitButtonLogic2RegistrationFormInModalDialog(
+    currentModalDialogId,
+    currentFormId,
+    currentFormContext,
+    nextModalDialogId,
+    nextAnchorId,
+    nextUrl,
+    nextUrlTarget // e.g. "_self", "_blank" or managed extra tabs extraTabName or extraSubTabName
+    ) {
+    try {
+      console.log("addSubmitButtonLogic2RegistrationFormInModalDialog for "+currentModalDialogId+", "+currentFormId+", "+currentFormContext);
+      const currentForm = document.getElementById(currentFormId);
+      try {
+        console.log("addSubmitButtonLogic2RegistrationFormInModalDialog currentForm="+JSON.stringify(currentForm));
+      } catch (err) {
+        console.log("addSubmitButtonLogic2RegistrationFormInModalDialog currentForm="+currentForm);
+      }
+
+      currentForm.addEventListener('submit', function(e) {
+        // validate on submit
+        console.log("submit event="+e);
+        // never send form data directly without JavaScript
+        e.preventDefault();
+
+        if (currentForm.checkValidity() === false) {
+          // client validation ERROR
+          customFormValidationOK = false;
+        } else {
+          // client validation OK: send data to server
+          var serverErrorMessage = readRegistrationFormAndSendToServer(currentFormId, currentFormContext);
+          // server validation result
+          customFormValidationOK = isEmpty(serverErrorMessage);
+          setServerErrorInvalidFeedbackRegistrationForm(currentFormId, serverErrorMessage);
+        }
+        currentForm.classList.add('was-validated');
+        console.log("validate="+customFormValidationOK);
+
+        if (customFormValidationOK) {
+          // client validation OK and server request OK:
+          // go to next step in the flow (e.g. to the next modal dialog)
+                    
+          // scroll to anchor? (can be in parallel to go to nextModalDialog or nextUrl)
+          if (nextAnchorId) {
+            // scroll to anchor
+            var doSmoothScroll = !nextUrl;
+            scrollToAnchor(nextAnchorId, doSmoothScroll);
+          }
+          // open nextUrl?
+          if (nextUrl) {
+            // go to new URL
+            if (extraTabName===nextUrlTarget) {
+              // special handling for extra tab
+              loadExtraTab(nextUrl);
+            } else if (extraSubTabName===nextUrlTarget) {
+              // special handling for extra sub tab
+              loadExtraSubTab(nextUrl);
+            } else {
+              // normal handling
+              console.log("window.open url="+url);
+              window.open(nextUrl, nextUrlTarget);
+            }
+            //
+          }
+          // hide current dialog and maybe go to next dialog
+          $('#'+currentModalDialogId).modal('hide');
+
+        } else {
+          // client validation error or server error
+          e.stopPropagation();
+        }
+
+        // update views (e.g. event-anonymoususer-view/event-registereduser-view)
+        updateDynamicView();
+      }, false);
+
+      $('#'+currentModalDialogId).on('show.bs.modal', function (e) {
+        // (re)set default when start showing the dialog/form
+        customFormValidationOK = false;
+      });
+      $('#'+currentModalDialogId).on('hidden.bs.modal', function (e) {
+        if (customFormValidationOK == true) {
+          // (re)set default when stop showing the dialog/form
+          customFormValidationOK = false;
+
+          // go to next dialog?
+          // - we could not do it before current dialog is hidden,
+          //   scrolling to nextAnchorId or go to nextUrl already done in on('submit')
+          if (nextModalDialogId) {
+            // go to next modal dialog
+            console.log("Show nextModalDialogId="+nextModalDialogId);
+            $('#'+nextModalDialogId).modal('show')
+          }
+        }
+      });
+      
+    } catch (exc) {
+      //debugging for old browsers: window.location.href = "/testevent#"+JSON.stringify(exc);
+      console.error("addSubmitButtonLogic2RegistrationFormInModalDialog:" +exc+ " " + JSON.stringify(exc));
+    }
+  }
+
+  /** Set Bootstrap server-side validation feedback: validation lead to an error if errorMessage is not empty */
+  function setServerErrorInvalidFeedbackRegistrationForm(formId, errorMessage) {
+    var isValid = isEmpty(errorMessage);
+    
+    // mark element as valid or invalid
+    var serverErrorElement=document.getElementById(formId+".serverError");
+    if (serverErrorElement) {
+      if (isValid) {
+        // set class for Bootstrap server-side validation feedback
+        serverErrorElement.className = "is-valid";
+      } else {
+        // set class for Bootstrap server-side validation feedback
+        serverErrorElement.className = "is-invalid";
+      }
+    }
+
+    // set error message
+    var serverErrorInvalidFeedbackDiv=document.getElementById(formId+".serverError-invalid-feedback");
+    if (serverErrorInvalidFeedbackDiv) {
+      if (isValid) {
+        // set text for Bootstrap server-side validation feedback
+        serverErrorInvalidFeedbackDiv.innerHTML = "";
+      } else {
+        // set text for Bootstrap server-side validation feedback
+        serverErrorInvalidFeedbackDiv.innerHTML = errorMessage;
+      }
+    }
+  }
+
+  /**
+   * Should only be called when validation was successful
+   * 
+   * @returns error message strin in the case of an error - this message should be shown to the user
+   */
+  function readRegistrationFormAndSendToServer(formId, formContext) {
+    // read user input
+    var userFormData = {};
+    // read email input field values
+    const emailOrPhone = document.getElementById(formId+".email").value;
+    userFormData['emailOrPhone'] = emailOrPhone;
+
+    // read other input filed values - read by field ids (optional)
+    for (var i=0; i<formDataFieldIDs.length; i++) {
+      var formDataFieldIDShort = formDataFieldIDs[i]
+      var formDataFieldID = formId+"."+formDataFieldIDShort;
+      try {
+        var field = document.getElementById(formDataFieldID);
+        if (field) {
+          // read value
+          formDataFieldValue = field.value;
+          if (formDataFieldValue) {
+            userFormData[formDataFieldIDShort] = formDataFieldValue;
+          }
+        }
+      } catch (exc) {
+        console.error("read formDataFieldIDs:" +exc+ " " + JSON.stringify(exc));
+      }
+    }
+
+    // read values from radio button(s) and maybe other form fields - read by field names (optional)
+    for (var i=0; i<formDataFieldNames.length; i++) {
+      var formDataFieldName = formDataFieldNames[i];
+      try {
+        var radios = Array.from(document.getElementsByName(formDataFieldName));
+        for (var i = 0, length = radios.length; i < length; i++) {
+          if (radios[i].checked) {
+            // read value of the checked radio
+            formDataFieldValue = radios[i].value;
+            if (formDataFieldValue) {
+              userFormData[formDataFieldName] = formDataFieldValue;
+
+              // only one radio can be logically checked, don't check the rest
+              break;
+            }
+          }
+        }
+      } catch (exc) {
+        console.error("read formDataFieldNames:" +exc+ " " + JSON.stringify(exc));
+      }
+    }
+
+    // send to server
+    var serverErrorMessage = saveAndSendUserRegistrationData(formId, formContext, emailOrPhone, userFormData);
+
+    // result
+    if (isEmpty(serverErrorMessage)) {
+      console.log("readRegistrationFormAndToServer: OK");
+    } else {
+      console.warn("readRegistrationFormAndToServer: serverErrorMessage="+serverErrorMessage);
+    }
+    return serverErrorMessage;
+  }
+
+  //
+  // HTML form validation
+  //
+
+  function setCustomFieldValidatorEmailOrPhone(emailOrPhoneFieldId) {
+    try {
+      // email blacklist
+      const forbiddenEmailRegexPatterns = [/^.*@example.com$/, /^.*@test.de$/];
+      
+      // add custom validator for email/phone
+      const field = document.getElementById(emailOrPhoneFieldId);
+      field.addEventListener('change', function(event) {
+        console.log("Change event="+JSON.stringify(event)+", field.value="+field.value);
+        var validationResult; // if filled then it indicates an error
+
+        // pre-check
+        if (!isEmailOrPhoneRequired && isEmpty(field.value)) {
+          // no user input needed and nothing entered - fine/valid
+          console.log("validation("+emailOrPhoneFieldId+") in not needed because optional");
+          validationResult = "";
+        } else {
+          // validation
+          if (isValidEmailOrPhone(field.value)) {
+            // it's a valid email
+            // is it forbidden/blacklisted?
+            var isForbidden = false;
+            for (var i=0; i<forbiddenEmailRegexPatterns.length; i++) {
+              forbiddenRegex = forbiddenEmailRegexPatterns[i];
+              if (forbiddenRegex.test(field.value)) {
+                isForbidden = true;
+                break;
+              }
+            }
+
+            if (isForbidden) {
+              // invalid
+              validationResult = "err (email blacklisted/forbidden)";
+            } else {
+              // valid
+              validationResult = "";
+            }
+          } else {
+            // it's no valid email address
+            validationResult = "err (no valid email)";
+          }
+        }
+        console.log("validationResult("+emailOrPhoneFieldId+")="+validationResult);
+        field.setCustomValidity(validationResult);
+      }, false);
+    } catch (exc) {
+      console.error("setCustomFieldValidatorEmailOrPhone:" +exc+ " " + JSON.stringify(exc));
+    }
+  }
+
+  function setCustomFieldValidatorRegistrationCode(registrationCodeFieldId) {
+    try {
+      // add custom validator for registration code
+      const field = document.getElementById(registrationCodeFieldId);
+      field.addEventListener('change', function(event) {
+        console.log("Change event="+JSON.stringify(event)+", field.value="+field.value);
+        var validationResult; // if filled then it indicates an error
+
+        // pre-check
+        if (!isRegistrationCodeRequired && isEmpty(field.value)) {
+          // no user input needed and nothing entered - fine/valid
+          console.log("validation("+registrationCodeFieldId+") in not needed because optional");
+          validationResult = "";
+        } else {
+          // validation
+          if (requiredRegistrationCodes.includes(field.value)) {
+            // it's a valid code
+            validationResult = "";
+          } else {
+            // it's not a valid code
+            validationResult = "err (invalid registration code)";
+          }
+        }
+        console.log("validationResult("+registrationCodeFieldId+")="+validationResult);
+        field.setCustomValidity(validationResult);
+      }, false);
+    } catch (exc) {
+      console.error("setCustomFieldValidatorRegistrationCode:" +exc+ " " + JSON.stringify(exc));
+    }
+  }
+
+  function setFieldRequired(fieldId, isRequired) {
+    try {
+      // add/remove "required" attribute
+      const field = document.getElementById(fieldId);
+      if (isRequired) {
+        field.setAttribute("required", "");
+      } else {
+        field.removeAttribute("required");
+      }
+
+    } catch (exc) {
+      console.error("setFieldRequired:" +exc+ " " + JSON.stringify(exc));
+    }
+  }
+
+
+  //
+  // send user registration data to server(s)
+  //
+
+  function saveAndSendUserRegistrationData(formId, formContext, userEmailOrPhone, userFormData) {
+    // server error or not
+    var serverErrorMessage = undefined;
+    /*
+    // this is currently for testing only
+    // TODO: modify the logic to incorporate real server errors/error messages
+    if (Math.random()<0.5){
+      serverErrorMessage = "Temporarely server error - please try again ("+new Date()+")";
+      return serverErrorMessage;
+    }
+    */
+
+    // save email locally
+    pagedataSet(userEmailOrPhone);
+
+    // extend userFormData
+    if (!userFormData) {
+      userFormData = {};
+    }
+    userFormData['formId'] = formId;
+    userFormData['formContext'] = formContext;
+    userFormData['emailOrPhone'] = userEmailOrPhone;
+    if (userEmailOrPhone && userEmailOrPhone.indexOf("@")>0) {
+      userFormData['email'] = userEmailOrPhone;
+    }
+
+    // update formId
+    var fullFormId = formId+"#"+formContext;
+    if (userFormData) {
+      fullFormId += "#"+JSON.stringify(userFormData);
+    }
+    console.log("sendUserDataFromForm userEmailOrPhone="+userEmailOrPhone+", fullFormId="+fullFormId);
+
+    // Success and Error functions for after the form is submitted
+    function success() {
+      console.log("success") ;
+    }
+    function error() {
+      console.log("error");
+    }
+
+    // send
+    try {
+      const secondPostToUrl = "https://formspree.io/f/maypnydl" // formspree for dance123
+      sendSignupFormViaAjax(formId, userFormData, userEmailOrPhone, secondPostToUrl, success, error);
+
+    } catch (exc) {
+      console.error("sendUserRegistrationData:" +exc+ " " + JSON.stringify(exc));
+    }
+
+    // result
+    return serverErrorMessage;
+  }
+
+  /** autostart user registration if HTTP request parameter "autostart" is set */
+  function startTimerForClickVisibleRegisterButtonBasedOnAutostartParam() {
+    const registerButtonClass="register-button-for-autostart";
+    // this also works with old browsers (compared to URL.searchParams):
+    var urlParams = getParams(window.location.href);
+    var urlParamAutostart = urlParams["autostart"];
+    //var urlObj = new URL(window.location.href);
+    //var urlParamAutostart = urlObj.searchParams.get("autostart");
+    if (urlParamAutostart) {
+      console.log("Set timer for clickVisibleLinkOrButton("+registerButtonClass+") with autostart="+urlParamAutostart);
+      window.setTimeout(function() {clickVisibleLinkOrButton(registerButtonClass)}, urlParamAutostart*1000);
+    } else {
+      console.log("Param autostart not set - no timerfor for clickVisibleLinkOrButton() started");
+    }
+  }
+  startTimerForClickVisibleRegisterButtonBasedOnAutostartParam();
+
+</script>
+<!-- END: EVENT registration dialogs JavaScript -->
+

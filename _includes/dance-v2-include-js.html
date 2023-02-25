@@ -1,0 +1,287 @@
+{% comment %}
+  <!-- JavaScript code for all pages to be included at the page begin (common) -->
+  {%- include dance-v2-include-js.html -%}
+{% endcomment %}
+
+
+<!-- COMMON INCLUDE JavaScript -->
+
+<!-- CSS to support multiple languages/i18n - static style -->
+  <style id="lang-style-static">
+    /* show all languages tied together */
+    .lang1 { font-style: normal; color: #d1d3d2; }
+    .lang2 { font-style: italic; color: #a3a1a2; opacity: 0.8; }
+
+    /* show all languages separately - without specific container */
+    .lang-show-all > .lang1 { font-style: normal; color: #d1d3d2; }
+    .lang-show-all > .lang2 { font-style: italic; color: #a3a1a2; opacity: 0.8; margin-top: -1.0em; }
+
+    a.purelang2 { font-style: italic; color: #cf9c00;  }
+    a.purelang2:hover { font-style: italic; color: #cfbb6b; }
+
+  </style>
+
+<!-- CSS to support multiple languages/i18n - dynamic style -
+      (this HTML element must be declared before the using it in JavaScript -->
+  <style id="lang-style-dynamic">
+    /* default CSS - will be overwritten by JS */
+    .lang-show-one         > :lang(en){ font-style: normal; color: #d1d3d2; opacity: 1.0; }
+    .lang-show-one         > :lang(de){ display: none; }
+    .lang-show-one-or-all  > .lang1{ font-style: normal; color: #d1d3d2; opacity: 1.0; }
+    .lang-show-one-or-all  > .lang2{ font-style: italic; color: #a3a1a2; opacity: 0.8; }
+    .lang-show-one-or-all  > p.lang2{ margin-top: -1.0em; }
+    .lang-show-one-or-all  > .p.lang2{ margin-top: -1.0em; }
+  </style>
+
+<script>
+  console.log("*** Info: dance-v2-include-js started, event_testparam={{ event_testparam }}");
+
+  var debugMsg = "debugMsg";
+
+  //
+  // general helpers
+  //
+  /**
+    * Get the URL parameters
+    * source: https://css-tricks.com/snippets/javascript/get-url-variables/
+    * 
+    * this also works with old browsers (compared to URL.searchParams):
+    *   var urlParams = getParams(window.location.href);
+    *   var urlParamUtmSource = urlParams['utm_source'];
+    * 
+    * this would be the modern variant: 
+    *   var urlObj = new URL(window.location.href);
+    *   var urlParamUtmSource = urlObj.searchParams.get("utm_source");
+    * 
+    * @param  {String} url The URL
+    * @return {Object}     The URL parameters
+    */
+  //var getParams = function (url) {
+ function getParams(url) {
+    var params = {};
+    var parser = document.createElement('a');
+    parser.href = url;
+    var query = parser.search.substring(1);
+    var vars = query.split('&');
+    for (var i = 0; i < vars.length; i++) {
+      var pair = vars[i].split('=');
+      params[pair[0]] = decodeURIComponent(pair[1]);
+    }
+    return params;
+  };
+
+
+
+  //
+  // language handling
+  //
+  var lang;
+
+  function updateLang() {
+    try {
+      try {
+        // determine language
+        var browserLang;
+        // this also works with old browsers
+        var urlParams = getParams(window.location.href);
+        var langStr = urlParams["lang"];
+        //var urlObj = new URL(window.location.href);
+        //var langStr = jQuery.url.param("lang");
+        if (langStr) {
+          // prio 1: HTTP request parameter "lang" (for testing)
+          browserLang = langStr;
+        } else {
+          // prio 2: browser language settings
+          browserLang =
+            navigator.languages ? navigator.languages[0] : (navigator.language || navigator.userLanguage)
+        }
+        if (browserLang) {
+          if (browserLang.indexOf("en")>=0) {
+            lang = "en";
+          } else if (browserLang.indexOf("de")>=0) {
+            lang = "de";
+          }
+        }
+
+        // determine main language
+        var mainLang = "en";
+        var htmls = document.getElementsByName("html");
+        if (htmls && htmls.length && htmls.length>=1) {
+          var mainLangRead = htmls[0].getAttribute(attributeName);
+          if (mainLangRead) {
+            mainLang = mainLangRead;
+          }
+        }
+        
+        //and disabled lang for "lang-show-one"
+        var langShowOne1 = "en";
+        var langShowOne2 = "de";
+        if (mainLang && mainLang=="de") {
+          langShowOne1 = "de";
+          langShowOne2 = "en";
+        }
+      } catch (exc) {
+        console.error("updateLang (inner-try):" +exc+" "+JSON.stringify(exc));
+      }
+
+      // set CSS
+      var css;
+      if (lang && lang=="en") {
+        css = 
+          // show one: en
+          ".lang-show-one         > :lang(en) { font-style: normal; color: #d1d3d2; opacity: 1.0; } "+
+          ".lang-show-one         > :lang(de) { display: none; }"+
+          // show one: en
+          ".lang-show-one-or-all  > :lang(en) { font-style: normal; color: #d1d3d2; opacity: 1.0; } "+
+          ".lang-show-one-or-all  > :lang(de) { display: none; }";
+      } else if (lang && lang=="de") {
+        css = 
+          // show one: de
+          ".lang-show-one         > :lang(de) { font-style: normal; color: #d1d3d2; opacity: 1.0; } "+
+          ".lang-show-one         > :lang(en) { display: none; }"+
+          // show one: de
+          ".lang-show-one-or-all  > :lang(de) { font-style: normal; color: #d1d3d2; opacity: 1.0; } "+
+          ".lang-show-one-or-all  > :lang(en) { display: none; }";
+      } else {
+        // unknown language
+        css = 
+          // show one: default, depending on page
+          ".lang-show-one         > :lang("+langShowOne1+") { font-style: normal; color: #d1d3d2; opacity: 1.0; } "+
+          ".lang-show-one         > :lang("+langShowOne2+") { display: none; }"+
+          // show all:
+          ".lang-show-one-or-all  > .lang1 { font-style: normal; color: #d1d3d2; opacity: 1.0; } "+
+          ".lang-show-one-or-all  > .lang2 { font-style: italic; color: #a3a1a2; opacity: 0.8; } "+
+          ".lang-show-one-or-all  > p.lang2 { margin-top: -1.0em; } " +
+          ".lang-show-one-or-all  > .p.lang2 { margin-top: -1.0em; } ";
+      }
+      // update CSS
+      if (css) {
+        document.getElementById('lang-style-dynamic').innerHTML=css;
+        console.log("lang="+lang+", css="+css);
+      }
+
+    } catch (exc) {
+      console.error("updateLang:" +exc+" "+JSON.stringify(exc));
+    }
+
+  }
+
+  // set language now
+  updateLang();
+  debugMsg +="- updateLang()="+lang;
+
+
+  //
+  // helper for browser (version) detection (https://www.digitalminds.io/blog/detecting-outdated-browsers-in-vanilla-javascript)
+  //
+
+  // USED HERE: old browser detection (2019): https://www.digitalminds.io/blog/detecting-outdated-browsers-in-vanilla-javascript
+  // NOT USED HERE: super old browser detection (non-"HTML5" browsers/2013) : https://github.com/mediafreakch/legacy-browser-detection
+  /** BrowserDetector
+    *
+    * This util checks the current browser name and version and offers a
+    * convinient API to test for specific versions or browsers and whether
+    * the current visitor uses a supported browser or not. */
+  /*export default*/ class BrowserDetector {
+    constructor() {
+          this.browser = {};
+          this.unsupportedBrowsers = {
+              Chrome: 70,
+              Firefox: 60,
+              IE: 10,
+              Edge: 15,
+              Opera: 50,
+              Safari: 12
+          };
+
+          this._detectBrowser();
+      }
+    /**
+    * Detects the current browser and its version number.
+    *
+    * @returns {Object} An object with keys for browser `name` and `version`.
+    */
+    _detectBrowser() {
+      this.browser = (function() {
+          var ua = navigator.userAgent,
+              tem,
+              M =
+                  ua.match(
+                      /(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i
+                  ) || [];
+
+          if (/trident/i.test(M[1])) {
+              tem = /\brv[ :]+(\d+)/g.exec(ua) || [];
+              return { name: "IE", version: tem[1] || "" };
+          }
+
+          if (M[1] === "Chrome") {
+              tem = ua.match(/\b(OPR|Edge)\/(\d+)/);
+              if (tem != null) {
+                  return { name: tem[1].replace("OPR", "Opera"), version: tem[2] };
+              }
+          }
+
+          M = M[2] ? [M[1], M[2]] : [navigator.appName, navigator.appVersion, "-?"];
+
+          if ((tem = ua.match(/version\/(\d+)/i)) != null) {
+              M.splice(1, 1, tem[1]);
+          }
+
+          return { name: M[0], version: M[1] };
+      })();
+    }
+   /**
+    * Checks if the current browser is supported by
+    *
+    * @returns {Boolean}
+    */
+    isSupported() {
+      if (this.unsupportedBrowsers.hasOwnProperty(this.browser.name)) {
+          if (+this.browser.version > this.unsupportedBrowsers[this.browser.name]) {
+              return true;
+          }
+      }
+
+      return false;
+    }
+    isBrowserSafari() {
+      return (this.browser.name.toLowerCase().includes("safari"))
+    }
+  }
+
+  // isBrowserSupported: is it a quite new browser that supports all required JavaScript?
+  isBrowserSafari = (new BrowserDetector).isBrowserSafari();
+  console.log("isBrowserSafari="+isBrowserSafari);
+  isBrowserSupported = (new BrowserDetector).isSupported();
+  console.log("isBrowserSupported="+isBrowserSupported);
+  // for debugging,
+  // this also works with old browsers (compared to URL.searchParams):
+  var urlParams = getParams(window.location.href);
+  var isBrowserSupportedParam = urlParams["is-browser-supported"];
+  if (isBrowserSupportedParam) {
+    isBrowserSupported = (isBrowserSupportedParam=="1");
+  }
+  debugMsg +="- isBrowserSupported="+isBrowserSupported;
+
+  //
+  // generic helper functions
+  //
+
+  function isEmpty(str) {
+      return (!str || str.length === 0 );
+  }
+
+  function logUserAction(s) {
+    console.log(s);
+  }
+
+  function isElementVisible( elem ) {
+    // button.style && button.style.visibility==='visible' /*button.style.display && button.style.display=="block"*/
+    return !!( elem.offsetWidth || elem.offsetHeight || elem.getClientRects().length );
+  };
+
+
+</script>
+        <!-- END: COMMON INCLUDE JavaScript -->
+

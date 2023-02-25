@@ -1,0 +1,324 @@
+{% comment %}
+  <!-- Event (modal) registration dialogs -->
+  {%- include event-v2-registration-dialogs.html -%}
+{% endcomment %}
+
+
+
+        <!-- Helper JavaScript for event (modal) dialogs -->
+        {%- include event-v2-registration-dialogs-js.html -%}
+
+
+
+        <!--
+          Modal dialog(s) to reserve or join an event
+        -->
+
+        <!-- Modal Dialog "registerSimpleModal" -->
+        <div class="modal fade" id="registerSimpleModal" role="dialog">
+          <div class="modal-dialog modal-dialog-centered">
+            <!-- Modal content-->
+            <div class="modal-content">
+              <form id="registerSimpleForm" class="needs-validation" novalidate>
+                <div class="modal-header">
+                    <!-- event is in future -->
+                    <div class="event-view event-infuture-view">
+                      <div class="lang-show-one-or-all">
+                        <h3 class="modal-title lang1" lang="en">Reserve a free spot now ...</h3>
+                        <h3 class="modal-title lang2" lang="de">Jetzt einen kostenlosen Platz reservieren ...</h3>
+                      </div>
+                    </div>
+                    <!-- event is now -->
+                    <div class="event-view event-now-view event-over-view">
+                      <div class="lang-show-one-or-all">
+                        <h3 class="modal-title lang1" lang="en">Join the party for free now ...</h3>
+                        <h3 class="modal-title lang2" lang="de">Jetzt kostenlos mitfeiern ...</h3>
+                      </div>
+                    </div>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close" onClick="logUserAction('registerSimpleModal-close');">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+
+                  <!-- intro text -->
+                  <div class="form-group">
+                    <div class="lang-show-one-or-all smalltext">
+                      <div class="lang1" lang="en">and subscribe to the dance123 event newsletter ...</div>
+                      <div class="lang2" lang="de">und Dance123-Event-Newsletter abonnieren ...</div>
+                    </div>
+                  </div>
+
+                  <!-- input email: providing an email is mandatory (default) or optional (if configured for event) -->
+                  <div class="form-group">
+                    <label for="registerSimpleForm.email" class="col-form-label lang-show-one-or-all">
+                      <span class="lang1" lang="en">Your email <span class="event-view event-registration-email-required-view">*</span></span>
+                      <span class="lang2" lang="de">Deine E-Mail <span class="event-view event-registration-email-required-view">*</span></span>
+                    </label>
+                    <input type="email" NOpattern="x+@example.com" class="form-control" id="registerSimpleForm.email" placeholder="my@example.com" autocomplete="email" name="email" requiredSetByJS>
+                    <div class="invalid-feedback lang-show-one-or-all">
+                      <span class="lang1 text-danger" lang="en">Please provide a valid email</span>
+                      <span class="lang2 text-danger" lang="de">Bitte gültige E-Mail angeben</span>
+                    </div>
+                  </div>
+                  
+                  <!-- input registration code (if configured for event) -->
+                  <div class="form-group event-view event-registration-code-required-view">
+                    <label for="registerSimpleForm.registrationCode" class="col-form-label lang-show-one-or-all">
+                      <span class="lang1" lang="en">Your registration code *</span>
+                      <span class="lang2" lang="de">Dein Registrierungscode *</span>
+                    </label>
+                    <input type="text" NOpattern="x+" class="form-control" id="registerSimpleForm.registrationCode" placeholder="mycode123" name="registrationCode" requiredSetByJS>
+                    <div class="invalid-feedback lang-show-one-or-all">
+                      <span class="lang1 text-danger" lang="en">Please provide a valid registration code</span>
+                      <span class="lang2 text-danger" lang="de">Bitte gültige Registrierungscode angeben</span>
+                    </div>
+                  </div>
+
+                  <!-- input name (if configured for event) -->
+                  <div class="form-group event-view event-registration-name-required-view">
+                    <label for="registerSimpleForm.registrationName" class="col-form-label lang-show-one-or-all">
+                      <span class="lang1" lang="en">Your name *</span>
+                      <span class="lang2" lang="de">Dein Name *</span>
+                    </label>
+                    <input type="text" NOpattern="x+" class="form-control" id="registerSimpleForm.registrationName" placeholder="My Name" name="registrationName" requiredSetByJS>
+                    <div class="invalid-feedback lang-show-one-or-all">
+                      <span class="lang1 text-danger" lang="en">Please enter your name</span>
+                      <span class="lang2 text-danger" lang="de">Bitte geben deinen Namen an</span>
+                    </div>
+                  </div>
+
+                  <!-- input gender (if configured for event) -->
+                  <div class="form-group event-view event-registration-gender-required-view">
+                    <label for="registerSimpleForm.registrationGender" class="col-form-label lang-show-one-or-all">
+                      <span class="lang1" lang="en">I am *</span>
+                      <span class="lang2" lang="de">Ich bin *</span>
+                    </label>
+                    <br>
+                    <input type="radio" id="registerSimpleForm.registrationGenderFemale" name="registrationGender" value="female" requiredSetByJS>
+                    <label for="registerSimpleForm.registrationGenderFemale" class="lang-show-one-or-all">
+                      <span class="lang1" lang="en">Female</span>
+                      <span class="lang2" lang="de">Frau</span>
+                    </label><br>
+                    <input type="radio" id="registerSimpleForm.registrationGenderMale" name="registrationGender" value="male" requiredSetByJS>
+                    <label for="registerSimpleForm.registrationGenderMale" class="lang-show-one-or-all">
+                      <span class="lang1" lang="en">Male</span>
+                      <span class="lang2" lang="de">Mann</span>
+                    </label><br>
+                    <div class="invalid-feedback lang-show-one-or-all">
+                      <span class="lang1 text-danger" lang="en">Please select</span>
+                      <span class="lang2 text-danger" lang="de">Bitte auswählen</span>
+                    </div>
+                  </div>
+          
+                  <!-- input motto/comment (if configured for event) -->
+                  <div class="form-group event-view event-registration-comment-required-view">
+                    <label for="registerSimpleForm.registrationComment" class="col-form-label lang-show-one-or-all">
+                      <span class="lang1" lang="en">Your motto, your comment *</span>
+                      <span class="lang2" lang="de">Dein Motto, dein Kommentar *</span>
+                    </label>
+                    <input type="text" NOpattern="x+" class="form-control" id="registerSimpleForm.registrationComment" placeholder="My motto is ..." name="registrationComment" requiredSetByJS>
+                    <div class="invalid-feedback lang-show-one-or-all">
+                      <span class="lang1 text-danger" lang="en">Please enter</span>
+                      <span class="lang2 text-danger" lang="de">Bitte eingeben</span>
+                    </div>
+                  </div>
+
+                  <!-- output optional server error -->
+                  <div class="form-group">
+                    <input type="hidden" id="registerSimpleForm.serverError" name="serverError" style="display: hidden;">
+                    <div id="registerSimpleForm.serverError-invalid-feedback" class="invalid-feedback">
+                    </div>
+                  </div>
+                    
+                  <!-- optional note (if fields are required) -->
+                  <div class="event-view NOTevent-registration-email-required-view event-registration-code-required-view event-registration-name-required-view event-registration-gender-required-view event-registration-comment-required-view">
+                    <br>
+                    <div class="lang-show-one-or-all smalltext">
+                      <span class="lang1" lang="en">*) required</span>
+                      <span class="lang2" lang="de">*) Pflichtangabe</span>
+                    </div>
+                  </div>
+                  <div class="event-view event-registration-email-notrequired-view">
+                    <!-- optional note (if email is not required) -->
+                    <br>
+                    <div class="lang-show-one-or-all smalltext">
+                      <span class="lang1" lang="en">Entering an email is optional</span>
+                      <span class="lang2" lang="de">Angabe der E-Mail ist freiwillig</span>
+                    </div>
+                  </div>
+
+                </div>
+
+                <!-- footer with submit button -->
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-default btn-primary" XXXdata-dismiss="modal" XXXdata-toggle="modal" XXXdata-target="#startEventNowModal" onClick="logUserAction('registerSimpleModal-start');">
+                    <!-- event is in future -->
+                    <div class="event-view event-infuture-view">
+                      <div class="lang-show-one-or-all">
+                        <div class="modal-title lang1" lang="en">Reserve ...</div>
+                        <div class="modal-title lang2" lang="de">Reserviere ...</div>
+                      </div>
+                    </div>
+                    <!-- event is now -->
+                    <div class="event-view event-now-view event-over-view">
+                      <div class="lang-show-one-or-all">
+                        <div class="modal-title lang1" lang="en">Join ...</div>
+                        <div class="modal-title lang2" lang="de">Start ...</div>
+                      </div>
+                    </div>
+                  </button>
+                </div>
+
+              </form>
+            </div>
+          </div>
+        </div>
+        <script>
+          // Example starter JavaScript for disabling form submissions if there are invalid fields
+          (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+
+              // add custom validators
+              setCustomFieldValidatorEmailOrPhone("registerSimpleForm.email");
+              setCustomFieldValidatorRegistrationCode("registerSimpleForm.registrationCode");
+              setFieldRequired("registerSimpleForm.email", isEmailOrPhoneRequired);
+              setFieldRequired("registerSimpleForm.registrationCode", isRegistrationCodeRequired);
+              setFieldRequired("registerSimpleForm.registrationName", isRegistrationNameRequired);
+              setFieldRequired("registerSimpleForm.registrationGenderMale", isRegistrationGenderRequired);
+              setFieldRequired("registerSimpleForm.registrationGenderFemale", isRegistrationGenderRequired);
+              setFieldRequired("registerSimpleForm.registrationComment", isRegistrationCommentRequired);
+
+              // prepare modal dialog/form
+              if (isEventInFuture) {
+                // event is in future
+                addSubmitButtonLogic2RegistrationFormInModalDialog(
+                  /*currentModalDialogId=*/ "registerSimpleModal",
+                  /*currentFormId=*/        "registerSimpleForm",
+                  /*currentFormContext=*/   "register",
+
+                  /*nextModalDialogId=*/    "shareEventModal",
+                  /*nextAnchorId=*/         undefined,
+                  /*nextUrl=*/              undefined,
+                  /*nextUrlTarget=*/        undefined
+                );
+              } else {
+                // event is now (or over)
+                var nextUrl = undefined;
+                var nextUrlTarget = undefined;
+                if (isMainroomEnabled) {
+                  nextUrl = mainroomUrl;
+                  nextUrlTarget = extraTabName;
+                }
+                addSubmitButtonLogic2RegistrationFormInModalDialog(
+                  /*currentModalDialogId=*/ "registerSimpleModal",
+                  /*currentFormId=*/        "registerSimpleForm",
+                  /*currentFormContext=*/   "join",
+
+                  /*nextModalDialogId=*/    undefined,
+                  /*nextAnchorId=*/         "event-rooms-start",
+                  /*nextUrl=*/              nextUrl,
+                  /*nextUrlTarget=*/        nextUrlTarget
+                );
+              }
+
+            }, false);
+          })();
+        </script>
+
+
+        <!-- Modal Dialog "shareEventModal" TODO: implement sharing!!! -->
+        <div class="modal fade" id="shareEventModal" role="dialog">
+          <div class="modal-dialog modal-dialog-centered">
+            <!-- Modal content-->
+            <div class="modal-content">
+              <form>
+                <div class="modal-header">
+                  <div class="event-view event-registereduser-view">
+                    <div class="lang-show-one-or-all">
+                      <h3 class="modal-title lang1" lang="en">Thank you for your reservation</h3>
+                      <h3 class="modal-title lang2" lang="de">Danke für Deine Reservierung</h3>
+                    </div>
+                  </div>
+                  <div class="event-view event-anonymoususer-view">
+                    <div class="lang-show-one-or-all">
+                      <h3 class="modal-title lang1" lang="en">Thank you for your interest</h3>
+                      <h3 class="modal-title lang2" lang="de">Danke für Dein Interesse</h3>
+                    </div>
+                  </div>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close" onClick="logUserAction('shareEventModal-close');">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+
+                <div class="modal-body">
+                  <!-- intro text -->
+                  <div class="form-group">
+                    <div class="lang-show-one-or-all">
+                      <p class="lang1" lang="en">
+                        Invite your friends and family right away ...</p>
+                      <p class="lang2" lang="de">
+                        Lade gleich deine Freunde und Familie mit ein ...</p>
+                    </div>
+                    <div class="form-group">
+                      <div class="lang-show-one-or-all">
+                        <p class="lang1" lang="en">
+                          Share this page URL via WhatsApp, email, Facebook, ...</p>
+                        <p class="lang2" lang="de">
+                          Teile diese Seiten-URL per WhatsApp, E-Mail, Facebook, ...</p>
+                      </div>
+                    </div>
+
+                  <!-- URL/Link -->
+                  <div class="form-group">
+                    <div class="text-center">
+                      <b><a href="https://dance123.club{{ event_path }}?r=shareEventModal" target="_blank">https://dance123.club{{ event_path }}</a></b>
+                    </div>
+                  </div>
+                  
+                  {% comment %}
+                  <!--
+                  <div class="form-group row">
+                    <label for="addToCalId" class="col-sm-4 col-form-label col-form-label-lg">Klicken / Click:</label>
+                    <div class="col-sm-8">
+                      Zum Eintragen / To add:
+                      <div id="basicICal"></div>
+                      <script type="text/javascript" src="/js/jquery.icalendar.min.js"></script>
+                      <script type="text/javascript">
+                      $(function () {
+                        $.browser = "new";
+                        $('#basicICal').icalendar({
+                          sites: ['google', 'yahoo'], 
+                          start: new Date("{{ event_time_begin_utc }}"),
+                          end:   new Date("{{ event_time_end_utc }}"),
+                          title: '{{ event_title }}',
+                          description: '{{ event_title }}:\nhttps://dance123.club{{ event_path }}?r=cal',
+                          location: 'Zoom Party: dance123.club'});
+                      });
+                      </script>                
+
+                      Falls es nicht funktioniert, dann bitte manuell.<br>
+                      If it doesn't work then add the date manually, please.
+
+                    </div>
+                  </div>
+                  -->
+                  {% endcomment %}
+                </div>
+
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default btn-primary" data-dismiss="modal" onClick="logUserAction('shareEventModal-done');">
+                    <div class="lang-show-one-or-all">
+                      <div class="modal-title lang1" lang="en">Thanks ... and see you at the party ...</div>
+                      <div class="modal-title lang2" lang="de">Danke ... und bis zur Party ...</div>
+                    </div>
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- END: EVENT (MODAL) DIALOGS -->

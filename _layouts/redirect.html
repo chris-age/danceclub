@@ -1,0 +1,78 @@
+---
+---
+<!doctype html>
+<html>
+  <head>
+  
+    <meta charset="utf-8">
+    <meta http-equiv="refresh" content="2; {{ page.destination_url }}?from={{ page.url }}&t=meta#{{ page.destination_anker }}">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="-1">
+    <link rel="stylesheet" href="/css/cyborg-for-bootstrap-4.5.3/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
+  </head>
+  <body>
+      <div class="container">
+
+        <div id="header-banner-after"></div>
+
+        <div class="row">
+          <div class="col-12">
+
+
+            <section>
+        
+                Go to ... <a href="{{ page.destination_url }}?from={{ page.url }}&t=a#{{ page.destination_anker }}">destination page</a>
+        
+            </section>
+          </div>
+        </div>
+      </div>
+
+
+    {% if site.google_analytics_id %}
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+      <script async src="https://www.googletagmanager.com/gtag/js?id={{ site.google_analytics_id }}"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', '{{ site.google_analytics_id }}');
+      </script>
+    {% endif %}
+    
+    <script>
+      document.addEventListener("DOMContentLoaded", function(){
+        // preparation
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        // r param
+        var r = urlParams.get('r');
+        if (!r) {
+          r = "{{ page.default_r }}";
+        }
+        const rUrlPart = "&r="+encodeURIComponent(r);
+        // autostart param
+        var autostart = urlParams.get('autostart');
+        var autostartUrlPart = ""
+        if (autostart) {
+          autostartUrlPart = "&autostart="+encodeURIComponent(autostart);
+        }
+        // anker
+        var anker = "{{ page.destination_anker }}";
+        if (anker) {
+          anker = "#"+anker;
+        } else {
+          anker = "";
+        }
+        // destination URL
+        const url = "{{ page.destination_url }}?from={{ page.url }}&t=js"+rUrlPart+autostartUrlPart+anker;
+          
+        // redirect/forward
+        window.location.replace(url);
+     });
+      
+    </script>
+
+  </body>
+</html>

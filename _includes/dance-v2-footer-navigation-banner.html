@@ -1,0 +1,36 @@
+{% comment %}
+  <!-- Show footer navigation banner -->
+  {% include event-v2-footer-navigation-banner.html %}
+{% endcomment %}
+
+
+        <!--
+          -
+          - FOOTER NAVIGATION BANNER
+          -
+          -->
+          <footer>
+            <div class="footer-banner-image-still">
+            <!--
+            <div class="footer-banner-image">
+            -->
+              <div class="container h-100">
+                <div class="row h-100">
+                  <div class="col-md-12 my-auto text-center">
+                    {% comment %}<!--
+                      &copy;&nbsp;<script>document.write(new Date().getFullYear());</script>&nbsp;Berlin&nbsp;dance123  &bull;
+                      -->{% endcomment -%}
+                    &copy;&nbsp;{{ "now" | date: "%Y" }}&nbsp;Berlin&nbsp;dance123  &bull;
+                    <a href="/contact">Contact</a>  &bull;
+                    <a href="https://dance123club.org/?r=dance123.club#about" target="_blank">About Us</a>  &bull;
+                    <a href="https://dance123club.org/?r=dance123.club#support-us" target="_blank">Support Us</a>  &bull;
+                    <a href="/faqs">FAQs</a>  &bull;
+                    <a href="/legal/terms">Terms of Use</a>  &bull;
+                    <a href="/legal/privacy">Privacy Policy</a>  &bull;
+                    <a href="/legal/cookies">Cookie Policy</a>
+                  </div>
+                </div>
+              </div>
+            </div>   
+          </footer>
+          <!-- END: FOOTER NAVIGATION BANNER -->

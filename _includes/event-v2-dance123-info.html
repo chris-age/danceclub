@@ -1,0 +1,98 @@
+{% comment %}
+  <!-- Show event info/details -->
+  {% include event-v2-dance123-info.html %}
+{% endcomment %}
+
+        <!--
+          -
+          - DANCE123 INFO
+          -
+          -->
+
+        <div class="container">
+          <div class="row">
+            <div class="col-12">
+
+              <section>
+                <div id="title" style="margin: 0">
+                  <div class="lang-show-one-or-all">
+                    <h2 class="lang1" lang="en">About dance123.club</h2>
+                    <h2 class="lang2" lang="de">Über dance123.club</h2>
+                  </div>
+                </div>
+        
+                <div>
+                  <!-- intro text 1 -->
+                  <div class="lang-show-one-or-all">
+                    <div class="lang1" lang="en">
+                      Many clubs are inaccessible or overcrowded ... so we can celebrate and have fun easily and worldwide for free via Zoom video meeting ... dance, see and be seen ...
+                    </div>
+                    <div class="lang2" lang="de">
+                      Viele Clubs sind nicht zugänglich oder überfüllt ... also feiern wir ganz einfach und weltweit kostenlos per Zoom-Video-Meeting ... tanzen, sehen und gesehen werden ... 
+                    </div>
+                  </div>
+
+                  <!-- intro video -->
+                  
+                  <div>
+                    <br>
+                  </div>
+                  <div class="row justify-content-md-center">
+                    <div class="col col-md-7 col-sm-12">
+                      <div class="embed-responsive embed-responsive-16by9">
+                        <iframe id="videoIframe" 
+                          class="lazy embed-responsive-item"
+                          loading="lazy"
+                          data-src="https://www.youtube-nocookie.com/embed/l9MzLspzMJM?rel=0&modestbranding=1"
+                          frameborder="0" allowfullscreen="allowfullscreen"></iframe>
+                      </div>
+                    </div>
+                  </div>
+                  <script>
+                    function adjustVideo() {
+                      if (lang && lang==="de") {
+                        // replace en intro by de intro
+                        console.log("de video");
+                        document.getElementById("videoIframe").setAttribute("data-src", "https://www.youtube-nocookie.com/embed/rYBiUcwymkY?rel=0&modestbranding=1");
+                      }
+                    }
+                    adjustVideo();
+                  </script>
+                  <div>
+                    <br>
+                  </div>
+                
+
+                  <!-- intro text 2 -->
+                  <div class="lang-show-one-or-all">
+                    <div class="lang1" lang="en">
+                      Ideal ...<!-- when clubs are inaccessible or overcrowded ...--> for friends in different cities ... for long-distance relationships ... for parents with small children ... for globetrotters ... for people who are looking for a safe environment ...
+                    </div>
+                    <div class="lang2" lang="de">
+                      Ideal ...<!-- wenn Clubs nicht zugänglich oder überfüllt sind ...--> für Freunde in verschiedenen Städten ... für Fernbeziehungen ... für Eltern mit kleinen Kindern ... für Weltenbummler ... für Menschen, die eine sichere Umgebung suchen ...
+                    </div>
+                  </div>
+
+                </div>
+
+
+                <div>
+                  <br>
+                  <br>
+                  {% include collect_email_form.html %}
+                  <br>
+                  <br>
+                </div>
+        
+                {% comment %}
+                  {% include ask_for_help.html %}
+                {% endcomment %}
+        
+        
+              </section>
+        
+            </div>
+          </div>
+        </div>
+        
+        <!-- END: DANCE123 INFO -->

@@ -1,0 +1,20 @@
+---
+meta_refresh_content: 10; url=/
+permalink: /staff
+layout: default_with_section_html
+---
+
+
+<h1 class="text-white">Marked as internal user now!</h1>
+<p>All further requests are marked/labelled now.</p>
+<p>If you want to reset this then delete the cookie 'internalUserLabel'</p>
+
+
+<script>
+  window.addEventListener("DOMContentLoaded", function() { 
+    /**
+     * You are visitin this staff page: set the cookies now!
+     */
+    setCookie('internalUserLabel', 'Chris');
+  });
+</script>

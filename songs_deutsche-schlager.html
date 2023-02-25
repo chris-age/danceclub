@@ -1,0 +1,137 @@
+---
+permalink: /songs/deutsche-schlager
+
+title: Deutsche Schlager - Songs und Texte
+layout: default_with_section_html
+---
+
+<h2>Willkommen</h2>
+<p>
+Für unsere Schlager-Parties haben wir hier die beliebtesten Lieber zusammengetragen - inklusive Texte zum Mitlesen und Mitsingen. Viel Spaß!
+</p>
+
+
+
+{% include next-events-german.html %}
+
+
+
+<h2>Deutsche Schlager: Beliebte Songs und Text</h2>
+
+<!-- more on CSV processing: https://jekyllrb.com/tutorials/csv-to-table/ -->
+<table>
+    <tr>
+        <th>Link</th>
+        <th>Song</th>
+        <th>Künstler</th>
+        <th>Songtext&nbsp;(Link)</th>
+        <th>Song&nbsp;bei&nbsp;Spotify&nbsp;(Link)</th>
+    </tr>
+  {% for row in site.data.songs-deutsche-schlager %}
+    {% if forloop.first %}
+    <!--
+    <tr>
+      {% for pair in row %}
+        <th>{{ pair[0] }}</th>
+      {% endfor %}
+    </tr>
+    -->
+    {% endif %}
+
+    {% if row["LyricsLink"] %}
+        <tr id="{{ row["TrackName"] | url_encode }}-{{ row["ArtistName"] | url_encode }}" class="anchor">
+            <td><a href="https://dance123.club/songs/deutsche-schlager#{{ row["TrackName"] | url_encode }}-{{ row["ArtistName"] | url_encode }}" target="_blank">&#x1f517;</a></td>
+            <td>{{ row["TrackName"] }}</td>
+            <td>{{ row["ArtistName"] }}</td>
+            <td><a href="{{ row["LyricsLink"] }}" target="_blank">Songtext</a></td>
+            <td><a href="https://open.spotify.com/track/{{ row["SpotifyID"] }}" target="_blank">Song @ Spotify</a></td>
+        </tr>
+        <tr id="{{ row["TrackName"] | url_encode }}-{{ row["ArtistName"] | url_encode }}-text" class="row-hidden-text">
+            <td  colspan="5">
+                "{{ row["TrackName"] }} ({{ row["ArtistName"] }})" - Text und Musik auf <a href="https://dance123.club/songs/deutsche-schlager#{{ row["TrackName"] | url_encode }}-{{ row["ArtistName"] | url_encode }}" target="_blank">https://dance123.club/songs/deutsche-schlager#{{ row["TrackName"] | url_encode }}-{{ row["ArtistName"] | url_encode }}</a>
+            </td>
+        </tr>
+    {% else %}
+        <!-- skip {{ row["TrackName"] }} / {{ row["ArtistName"] }} -->
+    {% endif %}
+  {% endfor %}
+
+</table>
+
+<br>
+<br>
+<br>
+
+<h2>Noch mehr Texte</h2>
+<p>Siehe auch: <a href="/songs/neue-deutsche-welle">Neue Deutsche Welle - Songs und Texte</a>
+</p>
+
+<br>
+<br>
+
+{% include next-events-german.html %}
+
+
+
+<script>
+  var count = 1;
+  
+  function scrollPage() {
+    console.log("Scroll now "+count);
+    count += 1;
+    window.scrollBy(0, -50);
+  }
+  
+  function logSongSelectedEvent(label) {
+    console.log("logSongSelectedEvent: "+label);
+    ga('send', 'event', 'selected-song', label, '');
+  }
+
+
+  $(document).ready(function(){
+    const url = window.location.href;
+    console.log("url="+url);
+    const ankerValue = url.split("#").pop();
+    console.log("ankerValue="+ankerValue);
+    if (ankerValue) {
+      const element = document.getElementById(ankerValue);
+      if (element) {
+        // hightlight the actual row
+        console.log("highlighted element");
+        element.classList.add('row-highlighted');
+        
+        // hightlight the row after
+        const element2 = document.getElementById(ankerValue+"-text");
+        if (element2) {
+            // hightlight the text row
+            console.log("highlighted element2");
+            element2.classList.remove("row-hidden-text");
+            element2.classList.add(   "row-highlighted-text");
+        }
+
+        // adjust the position because of the fixed header
+        scrollPage(); 
+        window.setTimeout(scrollPage, 100);
+        window.setTimeout(scrollPage, 200);
+        window.setTimeout(scrollPage, 300);
+        
+        // log
+        const pathname = window.location.pathname; 
+        logSongSelectedEvent(pathname+"#"+ankerValue);
+      }
+    }
+  });
+</script>
+<style>
+  .row-highlighted {
+    background-color: green;
+    font-size: 125%;
+  }
+  .row-hidden-text {
+    display: none;
+  }
+  .row-highlighted-text {
+    background-color: green;
+    font-size: 70%;
+  }
+</style>

@@ -1,0 +1,99 @@
+{% comment %}
+  <!--
+    -- Set SEO metatags for HTML header --
+    %- include event-v2-seo-metatags.html -%
+  -->
+{% endcomment %}
+
+
+    <!-- Begin manual SEO + more -->
+    <title>{{ event_title }} | {{ event_date_begin_nice }}, {{ event_time_begin_nice }} ({{ event_date_timezone_nice }}) | {{ site_name }}</title>
+    <meta name="title" content="{{ event_title }} | {{ event_date_begin_nice }} | {{ event_time_begin_nice }} ({{ event_date_timezone_nice }}) | {{ site_name }}">
+    <meta name="description" content="{{ event_description }}" />
+    <meta name="keywords" content="{{ event_keywords }}"/>
+    <link rel="canonical" href="https://dance123.club{{ event_path }}" />
+    <meta name="robots" content="index, follow, noarchive, unavailable_after: {{ event_time_end_utc }}" />
+    <meta property="event:start_time" content="{{ event_time_begin_utc }}">
+    <meta property="event:end_time" content="{{ event_time_end_utc }}">
+    <!-- Facebook + more / Open Graph -->
+    <meta property="og:site_name" content="{{ site_name }}" />
+    <meta property="og:url" content="https://dance123.club{{ event_path }}" />
+    <meta property="og:title" content="{{ event_title }} | {{ event_date_begin_nice }} | {{ event_time_begin_nice }} ({{ event_date_timezone_nice }}) | {{ site_name }}" />
+    <meta property="og:description" content="{{ event_description }}" />
+    <meta property="og:image" content="https://dance123.club{{ event_image_path }}" />
+    <meta property="og:locale" content="{{ event_locale_main | replace: "-", "_"}}" />
+    <meta property="og:locale:alternate" content="{{ event_locale_alternate | replace: "-", "_"}}" />
+    <!--
+    <meta property="og:image:height" prefix="og: https://ogp.me/ns#" content="384">
+    <meta property="og:image:width" prefix="og: https://ogp.me/ns#"  content="384">
+    -->
+    <meta property="og:type" content="event">
+    <meta property="og:event:start_time" content="{{ event_time_begin_utc }}">
+    <meta property="og:event:end_time" content="{{ event_time_end_utc }}">
+    <meta http-equiv="Content-Language" content="{{ event_lang_main }}" />
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <!-- <meta name="twitter:site" content="@..." />-->
+    <meta property="twitter:title" content="{{ event_title }} | {{ site_name }}" />
+    <meta property="twitter:image" content="https://dance123.club{{ event_image_path }}" />
+    <meta name="twitter:label1" value="Where"/>
+    <meta name="twitter:data1" value="Online event"/>
+    <meta name="twitter:label2" value="When"/>
+    <meta name="twitter:data2" value="{{ event_date_begin_nice }}, {{ event_time_begin_nice }} ({{ event_date_timezone_nice }})"/>
+    <!-- ??? -->
+    <meta data-react-helmet="true" property="geo.placename" content=""/>
+    <meta data-react-helmet="true" property="geo.region" content=""/>
+    <!-- Misc -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">-->
+    <link rel="shortcut icon" href="/images/icon2-32x32.ico" type="image/x-icon" />
+    <link rel="icon" href="/images/icon2-32x32.png" type="image/png" sizes="32x32" />
+    <link rel="icon" href="/images/icon2-192x192.png" type="image/png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="/images/icon2-180x180.png" />
+    <meta name="apple-mobile-web-app-title" content="dance123.club">
+    <meta name="application-name" content="dance123.club">
+    <!-- Google rich results (test with: https://search.google.com/test/rich-results) -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SocialEvent",
+        "name": "{{ event_title }} ",
+        "startDate": "{{ event_time_begin_utc }}",
+        "endDate": "{{ event_time_end_utc }}",
+        "eventStatus": "https://schema.org/EventScheduled",
+        "eventAttendanceMode": "https://schema.org/OnlineEventAttendanceMode",
+        "location": {
+          "@type": "VirtualLocation",
+          "url": "https://dance123.club{{ event_path }}"
+        },
+        "image": [
+          "https://dance123.club{{ event_image_path }}"
+          ],
+        "description": "{{ event_description }}",
+        "offers": {
+          "@type": "Offer",
+          "url": "https://dance123.club{{ event_path }}?r=schema.org-offer",
+          "price": "0.00",
+          "priceCurrency": "EUR",
+          "availability": "https://schema.org/InStock",
+          "validFrom": "2021-01-01T00:00Z",
+          "validThrough": "{{ event_time_begin_utc }}"
+        },
+        "performer": {
+          "@type": "Person",
+          "name": "{{ event_performer_name }}"
+        },
+        "organizer": {
+          "@type": "Organization",
+          "name": "{{ event_organizer_name }}",
+          "url": "{{ event_organizer_url }}"
+        }
+      }
+      </script>
+      <!--
+        "eventStatusALTERNATIVE1": "https://schema.org/EventCancelled",
+        "eventStatusALTERNATIVE2": "https://schema.org/EventPostponed",
+        "eventStatusALTERNATIVE3": "https://schema.org/EventRescheduled",
+        "@typeALTERNATIVE1": "PerformingGroup",
+      -->
+    <!-- End manuall SEO -->

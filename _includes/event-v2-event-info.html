@@ -1,0 +1,78 @@
+{% comment %}
+  <!-- Show event info/details -->
+  {% include event-v2-event-info.html %}
+{% endcomment %}
+
+        <!--
+          -
+          - EVENT INFO
+          -
+          -->
+
+        <div class="container">
+          <div class="row">
+            <div class="col-12">
+
+              <section>
+                <div id="title" style="margin: 0">
+                  <h2>{{ event_title }}</h2>
+                  <!--<h3>Details</h3>-->
+                </div>
+
+
+
+                <!-- event specific content -->
+                {{ content }}
+
+
+
+                <!-- event common text -->                                
+
+                    <!--
+                      <p class="lang1">
+                      Send music request to <b>dj @ dance123.club</b> or to the meeting chat.
+                      </p>
+                      <p class="lang2">Musikwünsche an <b>dj @ dance123.club</b> oder in den Meeting-Chat.
+                      </p>
+                      -->
+
+
+                <br>
+
+                <div class="event-view event-registration-view">
+                  <div class="lang-show-one-or-all">
+                    <p class="lang1" lang="en">
+                      <b>To reserve your spot and to join the party, click the big blue button at the top of this event page
+                    ...</b>
+                    </p>
+                    <p class="lang2" lang="de">
+                      <b>Um dir dein Platz zu reservieren und um an der Party teilzunehmen, klicke oben den großen, blauen Button
+                    oben auf dieser Event-Seite ...</b>
+                    </p>
+                  </div>
+                </div>
+              
+
+                <!-- hidden commands -->
+                <div>
+                  <br>
+                  <a href="#" class="" data-toggle="collapse" role="button"
+                    data-target="#eventCmds" aria-expanded="false"
+                    aria-controls="eventCmds">...</a>
+        
+                  <div class="collapse" id="eventCmds">
+                    <a href="#" onclick="pagedataClearAll();return false;">Clear</a><br>
+                    <a href="{{ event_image_path }}">Back</a><br>
+                  </div>
+
+                  <br>
+                  <br>
+                </div>
+
+              </section>
+        
+            </div>
+          </div>
+        </div>
+        
+        <!-- END: EVENT INFO -->

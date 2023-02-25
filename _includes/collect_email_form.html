@@ -1,0 +1,58 @@
+<div>
+  <span class="lang-show-one-or-all">
+    <span class="lang1" lang="en"><b>Get video dance event news</b></span>
+    <span class="lang2" lang="de"><b>Erfahre von zukünftigen Video-Dance-Partys</b></span>
+  </span>
+  <b>:</b><br>
+<!--<p><b>Erfahre von zukünftigen Video-Parties per E-Mail oder WhatsApp:</b><br>-->
+<form id="my-form" action="https://formspree.io/maypnydl" method="POST">
+  <!--<label>Deine E-Mail:</label>-->
+  <input id="my-form-emailOrPhone" type="E-Mail" name="emailOrPhone" style="color: #252525; background: #e8e8e8;" placeholder="Your  email" autocomplete="email" />
+  <!--<input type="hidden" name="pageurl" value="{{ page.url }}" />-->
+  <button id="my-form-button" class="lang-show-one" style="color: #252525;" onClick="logUserAction('my-form--collect-email');">
+    <span class="lang1" lang="en" style="color: #252525;">Subscribe to event newsletter ...</span>
+    <span class="lang2" lang="de" style="color: #252525;">Abonniere Event-Newsletter ...</span>
+  </button>
+  <p id="my-form-status" class="lang-show-one-or-all"></p>
+</form>
+</div>
+
+<!-- support email collection form -->
+<!-- Place this script at the end of the body tag -->
+<script>
+  window.addEventListener("DOMContentLoaded", function() {
+    // get the form elements defined in your form HTML above
+    var form = document.getElementById("my-form");
+    var inputEmailOrPhone = document.getElementById("my-form-emailOrPhone");
+    var button = document.getElementById("my-form-button");
+    var status = document.getElementById("my-form-status");
+
+    // Success and Error functions for after the form is submitted
+    function success() {
+      form.reset();
+      button.style = "display: none ";
+      status.innerHTML = '<span class="lang1 text-success" lang="en">Thanks for subscribing ...</span> &nbsp; <span class="lang2 text-success" lang="de">Danke fürs Abonnieren ...</span>';
+    }
+    function error() {
+      status.innerHTML = '<span class="lang1 text-danger" lang="en">Oops! There was an error ...</span> &nbsp; <span class="lang2 text-danger" lang="de">Oops! Es gab ein Problem ...</span>';
+    }
+
+    // handle the form submission event
+    form.addEventListener("submit", function(ev) {
+      ev.preventDefault();
+      var data;
+      var emailOrPhone;
+      try {
+        data = new FormData(form);
+        emailOrPhone = data.get('emailOrPhone');
+      } catch (exc) {
+        // fallback for older browsers
+        emailOrPhone = inputEmailOrPhone.value;
+      }
+      //const myHost = "dance123.club";
+      const secondPostToUrl = form.action;
+      sendSignupFormViaAjax("my-form#subscribe", data, emailOrPhone, secondPostToUrl, success, error);
+    });
+  });
+  
+</script>

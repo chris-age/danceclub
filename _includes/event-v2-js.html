@@ -1,0 +1,408 @@
+{% comment %}
+  <!-- JavaScript code for event-v2 -->
+  {%- include event-v2-js.html -%}
+{% endcomment %}
+
+
+<!-- EVENT JavaScript -->
+    <!-- JavaScript code for all pages to be included at the page begin (common) -->
+    {%- include dance-v2-include-js.html -%}
+
+<script>
+  console.log("*** Info: event-js started, event_testparam={{ event_testparam }}");
+
+  //
+  // get event configuration
+  //
+
+  // event date/time
+  const eventTimeBeginUtc = new Date("{{ event_time_begin_utc }}");
+  const eventTimeEndUtc = new Date("{{ event_time_end_utc }}");
+  const eventStartsEarlierSeconds = {{ event_starts_earlier_seconds }};
+  const eventEndsLaterSecondsAnonymousUser = {{ event_ends_later_seconds_anonymous_user }};
+  const eventEndsLaterSecondsRegisteredUser = {{ event_ends_later_seconds_registered_user }};
+  const eventTimeBeginEarlier = new Date(eventTimeBeginUtc.getTime() - (1000*eventStartsEarlierSeconds));
+  
+  // registration
+  const registrationEmailIsOptionalWithOptcodesStr = "{{ event_registration_email_is_optional_with_optcodes }}"; // allowed optcodes as comma separated string
+  const requiredRegistrationCodesStr = "{{ event_required_registration_codes }}"; // allowed registration/invitation codes as comma separated string
+  const isRegistrationNameRequired = {{ is_event_registration_name_required }};
+  const isRegistrationGenderRequired = {{ is_event_registration_gender_required }};
+  const isRegistrationCommentRequired = {{ is_event_registration_comment_required }};
+  const isRegistrationDisabled = {{ is_event_registration_disabled }};
+
+  // event room(s)/location(s)
+  const isMainroomEnabled = !{{ is_event_mainroom_disabled }};
+  const mainroomUrl = "{{ event_mainroom_url }}";
+  console.log("mainroomUrl="+mainroomUrl);
+
+
+
+  //
+  // process event configuration
+  //
+  const registrationEmailIsOptionalWithOptcodes = registrationEmailIsOptionalWithOptcodesStr.split(',').filter(function(e){return e;}); // filter() is to remove empty strings
+  console.log("registrationEIsOptionalWithOptcodes len="+registrationEmailIsOptionalWithOptcodes.length);
+  function isEmailOptional() {
+    // this also works with old browsers (compared to URL.searchParams):
+    var urlParams = getParams(window.location.href);
+    var optcode = urlParams["optcode"];
+    //var urlObj = new URL(window.location.href);
+    //var optcode = urlObj.searchParams.get("optcode");
+    if (optcode && (registrationEmailIsOptionalWithOptcodes.indexOf(optcode) > -1)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  const isEmailOrPhoneOptional = isEmailOptional();
+  const isEmailOrPhoneRequired = !isEmailOrPhoneOptional;
+  console.log("isEmailOrPhoneRequired="+isEmailOrPhoneRequired);
+  const requiredRegistrationCodes = requiredRegistrationCodesStr.split(',').filter(function(e){return e;}); // filter() is to remove empty strings
+  const isRegistrationCodeRequired = requiredRegistrationCodes && requiredRegistrationCodes.length>0;
+  console.log("requiredRegistrationCodes len="+requiredRegistrationCodes.length);
+  console.log("isRegistrationCodeRequired="+isRegistrationCodeRequired);
+  console.log("isRegistrationNameRequired="+isRegistrationNameRequired);
+  console.log("isRegistrationGenderRequired="+isRegistrationGenderRequired);
+  console.log("isRegistrationCommentRequired="+isRegistrationCommentRequired);
+
+
+  //
+  // global event/page state
+  //
+  var views = [];
+
+  var isEventInFuture;
+  var isEventNow;
+  var isEventOver;
+
+</script>
+
+
+<!-- CSS to support event views - static style -->
+<style id="event-view-static-style">
+  .event-view {display: none;}
+</style>
+<!-- CSS to support event views - dynamic style -
+      (this HTML element must be declared before the using it in JavaScript -->
+<style id="event-view-dynamic-style">
+  /* default CSS - will be overwritten by JS */
+  .browser.browser-unsupported {display: block;}
+</style>
+
+
+
+
+<script>
+
+  //
+  // store registration email and more
+  // per dance123 event (i.e. per URL/path) in browser's local storage
+  //
+
+  /** Set email for current page */
+  function pagedataSet(email) {
+    var pagePath = getNormalizedPagePath();
+    var eventTimeEndUtc = new Date("{{ event_time_end_utc }}");
+    var pagedata = { email: email, eventTimeEndUtc: eventTimeEndUtc }
+    window.localStorage.setItem(pagePath, JSON.stringify(pagedata));
+  }
+
+  /** Get  { email: '<email>', eventTimeEndUtc: '<timestamp>' }  object for current page/event */
+  function pagedataGet() {
+    var pagePath = getNormalizedPagePath();
+    var pagedataStr = window.localStorage.getItem(pagePath);
+    if (pagedataStr) {
+      return JSON.parse(pagedataStr);
+    }
+  }
+
+  /** @return current page path without request parameters */
+  function getNormalizedPagePath() {
+    var pathname = window.location.pathname; 
+    if (pathname.startsWith("/")) {
+      return pathname;
+    } else {
+      return "/"+pathname;
+    }
+  }
+
+  /** Cleanup: delete old data for all affected pages */
+  function pagedataCleanup() {
+    try {
+      // delete entries older than yesterday (i.e. use 1 day buffer before deletion)
+      var yesterday = new Date();
+      yesterday.setDate(new Date().getDate() - 1);
+
+      // iterate over all pages in the storage
+      var localStorage = window.localStorage;
+      Object.keys(localStorage).forEach(function(key){
+        if (key && key.startsWith("/")) {
+          // this is maybe a page entry
+          var pagedata = pagedataGet(key);
+          if (pagedata && pagedata.eventTimeEndUtc) {
+            var pageEventTimeEndUtc = new Date(pagedata.eventTimeEndUtc);
+            if (pageEventTimeEndUtc && pageEventTimeEndUtc.getTime() < yesterday.getTime()) {
+              // old entry
+              console.log("pagedataCleanup(): removeItem: "+key);
+              window.localStorage.removeItem(key);
+            }
+          }
+        }
+      });
+    } catch (exc) {
+      console.error("renderEventCountdown:" +exc+" "+JSON.stringify(exc));
+    }
+  }
+  /** Delete all data (for testing) */
+  function pagedataClearAll() {
+    var localStorage = window.localStorage;
+    localStorage.clear();
+  }
+  // cleanup local storage once during page loading
+  pagedataCleanup();
+
+
+
+  //
+  // event count down
+  //
+  function renderEventCountdown(secs) {
+    try {
+      var elements = document.getElementsByClassName("event-countdown");
+      for (var i = 0; i < elements.length; i++) {
+        elements[i].innerHTML=getCountDownString(secs);
+      }
+    } catch (exc) {
+      console.error("renderEventCountdown:" +exc+" "+JSON.stringify(exc));
+    }
+  }
+  function getCountDownString(secs) {
+    // calculate
+    var days = Math.floor(secs / (24*60*60));
+    var secsWithoutDays = secs - ((24*60*60)*days);
+    var hrs = Math.floor(secsWithoutDays / (60*60));
+    var secsWithoutHrs = secsWithoutDays - ((60*60)*hrs);
+    var mins =  Math.floor(secsWithoutHrs / 60);
+    var secsWithoutMins = secsWithoutHrs - (60*mins);
+
+    // convert to strings
+    var hrsS = twoDigits(hrs);
+    var minsS = twoDigits(mins);
+    var secsS = twoDigits(secsWithoutMins);
+
+    // render
+    //return days+' days '+hrsS+' hrs '+minsS+' mins '+secsS+' secs';
+    return days+'d '+hrsS+'h '+minsS+'m '+secsS+'s';
+  }
+  function twoDigits(n) {
+    if (n>=0 && n<10) {
+        return "0"+n;
+    } else {
+        return ""+n;
+    }
+  }
+
+
+
+  //
+  // handle current views
+  //
+  function updateUserEmailInDOM(email) {
+    //console.log("updateUserEmailInDOM("+email+") called");
+    try {
+      var emailElements = document.getElementsByClassName("user-email");
+      //console.log("updateUserEmailInDOM found "+emailElements.length+" elements to update");
+      for (var i = 0; i < emailElements.length; i++) {
+        emailElements[i].innerHTML=email;
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+ /*
+  * Render count down for events and dynamic view for register/join/start buttons ...
+  */
+  function updateDynamicViewEndless() {
+    try {
+      // do it now (and then 1 second later)
+      updateDynamicView();
+      const updateEveryMillis = 1000;
+      var millisUntilNextSecond = (updateEveryMillis -(new Date().getUTCMilliseconds() % updateEveryMillis)) + 1;
+
+      // prepare next call
+      console.log("updateDynamicViewEndless() done - "+new Date()+" millisUntilNextSecond="+millisUntilNextSecond);
+      setTimeout(function(){ updateDynamicViewEndless(false)}, millisUntilNextSecond);
+      
+    } catch (exc) {
+      console.error("updateDynamicViewEndless():" +exc+" "+JSON.stringify(exc));
+    }
+  }
+
+  // show the current view
+  function dynamicShowView(views /* string ids */) {
+    // CSS for views
+    var css = "";
+
+    //css += ".event-view {display: none;}"
+    for (var i = 0; i < views.length; i++) {
+      var v = views[i];
+      //css += ".event-view."+v+" {display: block;}";
+      css += ".event-view."+v+" {display: inline;}";
+    }
+
+    // update CSS
+    document.getElementById("event-view-dynamic-style").innerHTML=css;
+  }
+
+  /** Calculate and update current view */
+  var lastViewsStr = "";
+  function updateDynamicView() {
+    //console.log("updateDynamicView() called "+new Date());
+
+    // determine current configuration, context and state
+    var isRegisteredUser = false;
+    try {
+      var pagedata = pagedataGet();
+      if ((pagedata) && 
+          (pagedata.email && pagedata.email.length>=3 || !isEmailOrPhoneRequired)
+        ) {
+        isRegisteredUser = true;
+        updateUserEmailInDOM(pagedata.email);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+
+    // determine current view aspects
+    views = [];
+    try {
+      // this also works with old browsers (compared to URL.searchParams):
+      var urlParams = getParams(window.location.href);
+      var viewsStr = urlParams["views"];
+      //var urlObj = new URL(window.location.href);
+      //var viewsStr = urlObj.searchParams.get("views");
+
+      var testViewsStr = urlParams["testviews"];
+      //var testViewsStr = urlObj.searchParams.get("testviews");
+      var testviews = [];
+      if (testViewsStr) {
+        testviews = testViewsStr.split(',');
+      }
+
+      if (!viewsStr) {
+        // determine by state and context (real usage)
+        if (isBrowserSupported) {
+          views.push("event-supported-browser-view");
+        } else {
+          views.push("event-unsupported-browser-view");
+        }
+
+        if (isRegisteredUser) {
+          views.push("event-registereduser-view");
+        } else {
+          views.push("event-anonymoususer-view");
+        }
+
+        if (isRegistrationDisabled) {
+          views.push("event-noregistration-view");
+        } else {
+          views.push("event-registration-view");
+        }
+
+        if (isEmailOrPhoneRequired) {
+          views.push("event-registration-email-required-view");
+        } else {
+          views.push("event-registration-email-notrequired-view");
+        }
+
+        if (isRegistrationCodeRequired) {
+          views.push("event-registration-code-required-view");
+        } else {
+          views.push("event-registration-code-notrequired-view");
+        }
+
+        if (isRegistrationNameRequired) {
+          views.push("event-registration-name-required-view");
+        } else {
+          views.push("event-registration-name-notrequired-view");
+        }
+
+        if (isRegistrationGenderRequired) {
+          views.push("event-registration-gender-required-view");
+        } else {
+          views.push("event-registration-gender-notrequired-view");
+        }
+
+        if (isRegistrationCommentRequired) {
+          views.push("event-registration-comment-required-view");
+        } else {
+          views.push("event-registration-comment-notrequired-view");
+        }
+
+        var now = new Date();
+        var eventEndsLaterSeconds = (isRegisteredUser ? eventEndsLaterSecondsRegisteredUser : eventEndsLaterSecondsAnonymousUser);
+        var eventTimeEndLater = new Date(eventTimeEndUtc.getTime() + (1000*eventEndsLaterSeconds));
+        
+        var timingView;
+        if (testviews.indexOf("event-infuture-view") >= 0) {
+          timingView = "event-infuture-view";
+        } else if (testviews.indexOf("event-now-view") >= 0) {
+          timingView = "event-now-view";
+        } else if (testviews.indexOf("event-over-view") >= 0) {
+          timingView = "event-over-view";
+
+        } else if (now.getTime() < eventTimeBeginEarlier.getTime()) {
+          timingView = "event-infuture-view";
+        } else if (now.getTime() < eventTimeEndLater.getTime()) {
+          timingView = "event-now-view";
+        } else {
+          timingView = "event-over-view";
+        }
+        
+        if (timingView === "event-infuture-view") {
+          views.push("event-infuture-view");
+          isEventInFuture = true;
+          isEventNow      = false;
+          isEventOver     = false;
+          // update countdown
+          var secsUntilBegin = Math.round((eventTimeBeginUtc-now.getTime()) / 1000);
+          renderEventCountdown(secsUntilBegin);
+        } else if (timingView === "event-now-view") {
+          views.push("event-now-view");
+          isEventInFuture = false;
+          isEventNow      = true;
+          isEventOver     = false;
+        } else {
+          views.push("event-over-view");
+          isEventInFuture = false;
+          isEventNow      = false;
+          isEventOver     = true;
+        }
+      } else {
+        // determine by HTTP reqest parameter "views" (testing)
+        var views = viewsStr.split(',');
+      }
+
+    } catch (error) {
+      console.error(error);
+    }
+    var viewsStr = JSON.stringify(views);
+    if (lastViewsStr!==viewsStr) {
+      console.log("updateDynamicView(): changed views="+JSON.stringify(views));
+      lastViewsStr = viewsStr;
+      dynamicShowView(views);
+    }
+  }
+  // calculate views/CSS before first rendering
+  console.log("updateDynamicView() called initially "+new Date()); 
+  updateDynamicView();
+  // start endless updates inclusive views and count down ...
+  window.onload = function() {
+    updateDynamicViewEndless();
+  };
+
+</script>
+        <!-- END: EVENT JavaScript -->
+

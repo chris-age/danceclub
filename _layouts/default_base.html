@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="{{ site.lang | default: "en-US" }}" style=""> <!-- added empty style attribute for performance tuning -->
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="format-detection" content="telephone=no">
+
+    {% if page.meta_refresh_content %}
+      <meta http-equiv="refresh" content="{{ page.meta_refresh_content }}">
+    {% endif %}
+
+    <!-- load CSS -->
+    {% if page.include_webi_css %}
+      <link rel="stylesheet" href="/css/webi.css">
+    {% endif %}
+    <link rel="stylesheet" href="/css/cyborg-for-bootstrap-4.5.3/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ '/css/style-ext-v2.css?v=' | append: site.github.build_revision | relative_url }}">
+    <!--
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" as="font" crossorigin="anonymous">
+    -->
+    <link rel="preload" href="https://fonts.gstatic.com/s/roboto/v27/KFOmCnqEu92Fr1Mu4mxK.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="https://fonts.gstatic.com/s/roboto/v27/KFOlCnqEu92Fr1MmWUlfBBc4.woff2" as="font" type="font/woff2" crossorigin>
+
+    <!-- set SEO metatags for HTML header -->
+    {% seo %}
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!-- <meta property="og:image" prefix="og: https://ogp.me/ns#" content="https://dance123.club/images/icon2-384x384.png"> -->
+    <meta property="og:image" prefix="og: https://ogp.me/ns#" content="https://dance123.club{{ page.image | default: page.event_image | default: '/images/icon2-384x384.png' }}"> <!-- whatsapp preview less than 300KByte -->
+    <meta property="og:image:height" prefix="og: https://ogp.me/ns#" content="384">
+    <meta property="og:image:width" prefix="og: https://ogp.me/ns#"  content="384">
+    <meta name="twitter:card" content="summary_large_image">
+    <!-- <meta name="twitter:image" content="https://dance123.club/images/gifer.com.Wt3J.7157f1fea0e67b3b1b6a2ec8c2be299f.png"> -->
+    <meta name="twitter:image" content="https://dance123.club{{ page.image | default: page.event_image | default: '/images/gifer.com.Wt3J.7157f1fea0e67b3b1b6a2ec8c2be299f.png' }}">
+    <link rel="icon" href="/images/icon2-32x32.png" sizes="32x32" />
+    <link rel="icon" href="/images/icon2-192x192.png" sizes="192x192" />
+    <link rel="shortcut icon" href="/images/icon2-192x192.png" sizes="192x192">
+    <link rel="apple-touch-icon-precomposed" href="/images/icon2-180x180.png" />
+    <!--<script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5ebc0153d11b740012f120f1&product=inline-share-buttons" async="async"></script>-->
+
+    {% if page.include_respond_js %}
+      <!-- used by the Jekyll template (Attention: Do not load respond.js with defer attribute!)-->
+      <script src="{{ '/assets/js/respond.js' | relative_url }}"></script>
+    {% endif %}
+    <!-- Bootstrap code - Attention: Upgrade to Bootstrap 5.0 or higher causes incompatibilities! -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+    <!-- analytics and helpers -->
+    <script defer src="https://polyfill.io/v2/polyfill.min.js?features=IntersectionObserver"></script><!-- needed for yall included in dance-v2.js -->
+    <script defer src="{{ '/js/dance-v2.js?v=' | append: site.github.build_revision | relative_url }}" onload="allAnalytics('{{ site.google_analytics_id }}', '{{ page.default_r }}');"></script>
+    <script defer src="https://www.googletagmanager.com/gtag/js?id={{ site.google_analytics_id }}"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){window.dataLayer.push(arguments);}
+      gtag('js', new Date());
+    </script>
+    
+    <!-- JavaScript code for all pages to be included at the page begin (common) -->
+    {%- include dance-v2-include-js.html -%}
+
+  </head>
+  <body>
+
+    <!-- page body -->
+    {{ content }}
+
+  </body>
+</html>
